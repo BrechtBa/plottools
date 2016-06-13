@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='plottools',
@@ -8,7 +8,7 @@ setup(
 	url='',
 	author='Brecht Baeten',
 	author_email='brecht.baeten@gmail.com',
-	packages=['plottools'],
+	packages=find_packages(),
 	install_requires=['matplotlib'],
 	classifiers = ['Programming Language :: Python :: 2.7'],
 )

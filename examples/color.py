@@ -6,6 +6,8 @@ import plottools as pt
 # line plot with thick lines
 plt.figure()
 x = np.linspace(0,2*np.pi,100)
+
+pt.color.set_as_default()
 n = len(pt.color.cycle)
 
 for i in range(n):

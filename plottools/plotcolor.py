@@ -24,89 +24,120 @@ from cycler import cycler
 # Color definitions
 ################################################################################
 # colors that look ok and have considerable contrast in grayscale
-basecolors = {'b': ( 69./255,128./255,215./255),
-			  'o': (255./255,172./255,103./255),
-			  'g': ( 40./255,186./255, 72./255),
-			  'r': (165./255, 30./255, 33./255),
-			  'k': ( 81./255, 79./255, 82./255),
-			  'p': (123./255, 90./255,174./255),
-			  'd': ( 90./255, 22./255, 25./255),
-			  'y': (185./255,174./255, 85./255)}
+basecolors = {
+    'k': ( 13./255, 13./255, 13./255),
+    'n': (  0./255, 30./255,104./255),
+    'p': ( 77./255, 30./255, 92./255),
+    'm': (140./255, 43./255,  0./255),
+    'b': (  7./255, 79./255,255./255),
+    'g': ( 66./255,105./255, 36./255),
+    'r': (221./255, 79./255, 69./255),
+    't': ( 49./255,145./255,136./255),
+    'o': (167./255,145./255, 21./255),
+    'f': (212./255,136./255,194./255),
+    'l': ( 90./255,202./255, 98./255),
+    'a': (115./255,209./255,187./255),
+    'y': (205./255,220./255, 35./255) }
 
-lightcolors = {'b': ( 99./255,148./255,221./255),
-			   'o': (235./255,185./255,135./255),
-			   'g': ( 44./255,206./255, 80./255),
-			   'r': (217./255, 47./255, 50./255),
-			   'k': (111./255,108./255,113./255),
-			   'p': (140./255,111./255,184./255),
-			   'd': (136./255, 33./255, 38./255),
-			   'y': (190./255,180./255, 98./255)}
-
-basecycle = ['b','o','g','r','k','p','d','y']	
+lightcolors = {
+    'k': ( 33./255, 33./255, 33./255),
+    'n': (  0./255, 42./255,144./255),
+    'p': (103./255, 40./255,122./255),
+    'm': (180./255, 55./255,  0./255),
+    'b': ( 47./255,107./255,255./255),
+    'g': ( 85./255,136./255, 46./255),
+    'r': (227./255,111./255,103./255),
+    't': ( 59./255,175./255,164./255),
+    'o': (203./255,173./255, 25./255),
+    'f': (222./255,166./255,209./255),
+    'l': (120./255,212./255,126./255),
+    'a': (145./255,219./255,201./255),
+    'y': (213./255,226./255, 70./255) }
+    
+longnames = {
+    'black': 'k',
+    'navy': 'n',
+    'purple': 'p',
+    'maroon': 'm',
+    'blue': 'b',
+    'green': 'g',
+    'red': 'r',
+    'teal': 't',
+    'olive': 'o',
+    'fuchsia': 'f',
+    'lime': 'l',
+    'aqua': 'a',
+    'yellow': 'y' }
+    
+basecycle = ['b','r','l','y','m','o','a','n','p','g','t','f','k']    
 
 
 ################################################################################
 # Colorscheme class 
 ################################################################################
 class Colorscheme(object):
-	def __init__(self,colors=basecolors,cycle=basecycle):
-		"""
-		defines a colorscheme object useful for plotting
-		
-		Arguments:
-		colors: dict, dictionary of named colors as RGB (0-1) tupples
-		cycle:  list, list with the cycle order
-		
-		Example:
-		cs = Colorscheme({'r':(1.,0.,0.),'g':(0.,1.,0.),'b':(0.,0.,1.)},['b','g','r'])
-		print( cs[0] )
-		
-		print( cs.next() )
-		print( cs.next() )
-		
-		cs.reset_index()
-		print( cs.next() )
-		"""
-		
-		self.colors = colors
-		self.cycle = cycle
-		self.currentindex = 0
+    def __init__(self,colors=basecolors,longnames=longnames,cycle=basecycle):
+        """
+        defines a colorscheme object useful for plotting
+        
+        Arguments:
+        colors: dict, dictionary of named colors as RGB (0-1) tupples
+        cycle:  list, list with the cycle order
+        
+        Example:
+        cs = Colorscheme({'r':(1.,0.,0.),'g':(0.,1.,0.),'b':(0.,0.,1.)},['b','g','r'])
+        print( cs[0] )
+        
+        print( cs.next() )
+        print( cs.next() )
+        
+        cs.reset_index()
+        print( cs.next() )
+        """
+        
+        self.colors = colors
+        self.longnames = longnames
+        self.cycle = cycle
+        self.currentindex = 0
 
-	def next(self):
-		"""
-		get the next color in the cycle
-		"""
-		c = self.colors[self.cycle[self.currentindex]]
-		self.currentindex += 1
-		if self.currentindex >= len(self.cycle):
-			self.currentindex = 0
-			
-		return c
-		
-	def reset_index(self):
-		"""
-		resets the current color index to 0
-		"""
-		
-		self.currentindex = 0
-	
-	def set_as_default(self):
-		"""
-		sets the colorscheme as the default color cycle in matplotlib figures
-		"""
-		
-		plt.rc('axes',prop_cycle=cycler('color', [self.colors[c] for c in self.cycle]) )
-		
-	def __getitem__(self,key):
-		if isinstance(key,int):
-			self.currentindex = key+1
-			return self.colors[self.cycle[key]]
-		else:
-			self.currentindex = self.cycle.index(key)+1
-			return self.colors[key]
+    def next(self):
+        """
+        get the next color in the cycle
+        """
+        c = self.colors[self.cycle[self.currentindex]]
+        self.currentindex += 1
+        if self.currentindex >= len(self.cycle):
+            self.currentindex = 0
+            
+        return c
+        
+    def reset_index(self):
+        """
+        resets the current color index to 0
+        """
+        
+        self.currentindex = 0
+    
+    def set_as_default(self):
+        """
+        sets the colorscheme as the default color cycle in matplotlib figures
+        """
+        
+        plt.rc('axes',prop_cycle=cycler('color', [self.colors[c] for c in self.cycle]) )
+        
+    def __getitem__(self,key):
+        if isinstance(key,int):
+            self.currentindex = key+1
+            return self.colors[self.cycle[key]]
+        else:
+            if key in self.longnames:
+                key = self.longnames[key]
+            
+            self.currentindex = self.cycle.index(key)+1
+            return self.colors[key]
 
-				   
-			   
+                   
+               
 ################################################################################
 # create default color schemes
 ################################################################################

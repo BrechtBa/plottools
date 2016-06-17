@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+
 import plottools as pt
 
 
@@ -19,7 +20,7 @@ plt.legend()
 # some lines
 plt.figure()
 x = np.linspace(0,2*np.pi,100)
-plt.plot(x,np.sin(x- 0*2*np.pi/12),color=pt.color['d'],label='d')
+plt.plot(x,np.sin(x- 0*2*np.pi/12),color=pt.color['m'],label='m')
 plt.plot(x,np.sin(x- 2*2*np.pi/12),color=pt.color['b'],label='b')
 plt.plot(x,np.sin(x- 4*2*np.pi/12),color=pt.color['r'],label='r')
 plt.plot(x,np.sin(x- 6*2*np.pi/12),color=pt.color['y'],label='y')

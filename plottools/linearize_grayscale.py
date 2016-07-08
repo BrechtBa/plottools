@@ -21,11 +21,11 @@ def plot_colors(ax,coldict,order={}):
     plt.ylim([0,5])
 
     
-def rgb_to_grey(r,g,b):
+def rgb_to_gray(r,g,b):
     return 0.21*r + 0.72*g + 0.07*b
     
     
-def change_lightness_to_match_greyscale(col,grey):
+def change_lightness_to_match_grayscale(col,gray):
     h,l,s = colorsys.rgb_to_hls(col[0],col[1],col[2])
 
     ls = np.linspace(0,1,100)
@@ -33,10 +33,10 @@ def change_lightness_to_match_greyscale(col,grey):
     
     for li in ls:
         ri,gi,bi = colorsys.hls_to_rgb(h,li,s)
-        gs.append(rgb_to_grey(ri,gi,bi))
+        gs.append(rgb_to_gray(ri,gi,bi))
 
         
-    ll = np.interp(grey,gs,ls)
+    ll = np.interp(gray,gs,ls)
 
     newcol = colorsys.hls_to_rgb(h,ll,s)
     
@@ -45,44 +45,44 @@ def change_lightness_to_match_greyscale(col,grey):
   
   
   
-def linearize_greyscale(colors_rgb,grey_min,grey_max,order={},plot=False):
-    # convert all colors ro greyscale and determine the order
-    colors_grey_rgb = {}
-    grey = []
+def linearize_grayscale(colors_rgb,gray_min,gray_max,order={},plot=False):
+    # convert all colors ro grayscale and determine the order
+    colors_gray_rgb = {}
+    gray = []
     keys = []
     for k,c in colors_rgb.items():
-        g = rgb_to_grey(c[0],c[1],c[2])
+        g = rgb_to_gray(c[0],c[1],c[2])
         keys.append(k)
-        grey.append(g)
-        colors_grey_rgb[k] = (g,g,g)
+        gray.append(g)
+        colors_gray_rgb[k] = (g,g,g)
         
 
     # define the order
     if order == {}:
-        for i,o in enumerate(np.argsort(grey)):
+        for i,o in enumerate(np.argsort(gray)):
             order[keys[o]] = i
 
       
 
 
-    # rescale to greyscale min-max
-    grey_edit = np.linspace(grey_min,grey_max,len(order.keys()))
+    # rescale to grayscale min-max
+    gray_edit = np.linspace(gray_min,gray_max,len(order.keys()))
     colors_edit_rgb = {}
     for k,c in colors_rgb.items():
-        colors_edit_rgb[k] = change_lightness_to_match_greyscale(c,grey_edit[order[k]])
+        colors_edit_rgb[k] = change_lightness_to_match_grayscale(c,gray_edit[order[k]])
 
         
-    # convert all colors ro greyscale and determine the order
-    colors_edit_grey_rgb = {}
+    # convert all colors ro grayscale and determine the order
+    colors_edit_gray_rgb = {}
     for k,c in colors_edit_rgb.items():
-        g = rgb_to_grey(c[0],c[1],c[2])
-        colors_edit_grey_rgb[k] = (g,g,g)   
+        g = rgb_to_gray(c[0],c[1],c[2])
+        colors_edit_gray_rgb[k] = (g,g,g)   
         
 
     # print final colors
     if plot:
         for k,c in colors_edit_rgb.items():
-            print( '\'{}\': ({:>3.0f}./255,{:>3.0f}./255,{:>3.0f}./255)'.format(k,c[0]*255,c[1]*255,c[2]*255))
+            print( '\'{}\': ({:>3.0f}./255,{:>3.0f}./255,{:>3.0f}./255),'.format(k,c[0]*255,c[1]*255,c[2]*255))
            
         fig = plt.figure()
         ax1 = fig.add_subplot(221)
@@ -90,14 +90,14 @@ def linearize_greyscale(colors_rgb,grey_min,grey_max,order={},plot=False):
         plt.title('original')
         
         ax2 = fig.add_subplot(223)
-        plot_colors(ax2,colors_grey_rgb,order)
+        plot_colors(ax2,colors_gray_rgb,order)
 
         ax3 = fig.add_subplot(222)
         plot_colors(ax3,colors_edit_rgb,order)
         plt.title('edited')
         
         ax4 = fig.add_subplot(224)
-        plot_colors(ax4,colors_edit_grey_rgb,order)  
+        plot_colors(ax4,colors_edit_gray_rgb,order)  
           
       
     return colors_edit_rgb
@@ -130,10 +130,10 @@ if __name__ == '__main__':
     }
 
     print('\nbase colors:')
-    linearize_greyscale(colors_rgb,0.20,0.90,order=order,plot=True)
+    linearize_grayscale(colors_rgb,0.20,0.90,order=order,plot=True)
 
     print('\nlight colors:')
-    linearize_greyscale(colors_rgb,0.40,0.95,order=order,plot=True)
+    linearize_grayscale(colors_rgb,0.40,0.95,order=order,plot=True)
 
     
     plt.show()

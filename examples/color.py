@@ -20,7 +20,7 @@ plt.legend()
 # some lines
 plt.figure()
 x = np.linspace(0,2*np.pi,100)
-plt.plot(x,np.sin(x- 0*2*np.pi/12),color=pt.color['m'],label='m')
+plt.plot(x,np.sin(x- 0*2*np.pi/12),color=pt.color['l'],label='l')
 plt.plot(x,np.sin(x- 2*2*np.pi/12),color=pt.color['b'],label='b')
 plt.plot(x,np.sin(x- 4*2*np.pi/12),color=pt.color['r'],label='r')
 plt.plot(x,np.sin(x- 6*2*np.pi/12),color=pt.color['y'],label='y')

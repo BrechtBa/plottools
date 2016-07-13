@@ -22,8 +22,8 @@ def plot_colors(ax,coldict,order={}):
 
     
 def rgb_to_gray(r,g,b):
-    return 0.21*r + 0.72*g + 0.07*b
-    
+    # CCIR 601
+    return 0.2989*r + 0.5870*g + 0.1140*b
     
 def change_lightness_to_match_grayscale(col,gray):
     h,l,s = colorsys.rgb_to_hls(col[0],col[1],col[2])

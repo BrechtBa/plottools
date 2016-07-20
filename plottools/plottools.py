@@ -23,7 +23,7 @@ import itertools
 
 def set_publication_rc():
     # figure
-    plt.rc('figure', autolayout=True)
+    plt.rc('figure', autolayout=True, figsize=(80/25.4,50/25.4))
     plt.rc('savefig', format='pdf', dpi=150, bbox='tight', pad_inches=0.01)
     # font
     plt.rc('font', family='serif', serif=['computer modern roman'], size=6)
@@ -34,6 +34,8 @@ def set_publication_rc():
     plt.rc('legend', fontsize=8, frameon=True)
     # lines
     plt.rc('lines', linewidth=0.8,markersize=4)
+    # patch
+    plt.rc('patch', linewidth=0.4, edgecolor=(0.3,0.3,0.3))
     # text
     plt.rc('text', usetex=True)
     # ticks
@@ -63,7 +65,6 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
     Example:
         plottools.zoom_axes(fig,ax,[0.1,0.3],[1.0,1.2],[1.0,1.9],[1.5,2.0])
         
-    
     """
 
     plt.tight_layout()
@@ -200,3 +201,41 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
 
     return ax1
 
+def set_style(style,axes=None):
+    """
+    
+    Arguments:
+        style:          string, style string 'verticalgridonly',
+        axes=None:      matplotlib axes object
+        
+    Returns:
+        
+    Example:
+        plottools.set_style()
+    """
+    
+    if axes == None:
+        axes = plt.gca()
+        
+    if style == 'verticalgridonly':
+        # hide the spines except the bottom one
+        axes.spines['top'].set_visible(False)
+        # axes.spines['bottom'].set_visible(False)
+        axes.spines['right'].set_visible(False)
+        axes.spines['left'].set_visible(False)
+
+        # show ticks only on the left bottom  
+        axes.get_xaxis().tick_bottom()
+        axes.get_yaxis().tick_left()
+        
+        # add horizontal lines
+        yticks = axes.get_yticks()
+        xlim = axes.get_xlim()
+        
+        for y in yticks:
+            axes.plot(xlim, [y,y], '-', linewidth=0.5, color='k', alpha=0.3, zorder=-10)
+                 
+        axes.xaxis.set_tick_params(which='both', bottom='off', top='off', labelbottom='on', left='off', right='off', labelleft='on')
+        axes.yaxis.set_tick_params(which='both', bottom='off', top='off', labelbottom='on', left='off', right='off', labelleft='on')         
+                 
+             

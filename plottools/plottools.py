@@ -19,6 +19,7 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+import itertools
 
 def set_publication_rc():
     # figure
@@ -42,23 +43,27 @@ def set_publication_rc():
     plt.rc('ytick.minor', size=2, width=0.3, pad=3)
     
     
-def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alpha=0.8,connect=True,connect_color='k',connect_alpha=0.3,spacing_zoom=2,spacing_axes=20):
+def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alpha=0.8,connect=True,connect_color='k',connect_alpha=0.3,spacing=4,tick_width=20,tick_height=12):
     """
-    Creates a new axes which zooms in on a part of a given axes
+    Creates a new axes which zooms in on a part of a given axes.
+    Axes limits should not be changed after a zoom axes has been added
+    zoom_axes does not give the expected results when used on a subfigure
 
     Arguments:
-    fig:         matplotlib figure
-    ax:         matplotlib axes
-    zoom_x:        list, specifying the zooming horizontal area
-    zoom_y:        list, specifying the zooming vertical area
-    axes_x:        list, specifying the new axes horizontal location in data coordinates
-    axes_y:        list, specifying the new axes vertical location in data coordinates
+        fig:        matplotlib figure
+        ax:         matplotlib axes
+        zoom_x:     list, specifying the zooming horizontal area
+        zoom_y:     list, specifying the zooming vertical area
+        axes_x:     list, specifying the new axes horizontal location in data coordinates
+        axes_y:     list, specifying the new axes vertical location in data coordinates
 
     Returns:
-    ax1:         a new axes
+        ax1:        a new axes
 
     Example:
-
+        plottools.zoom_axes(fig,ax,[0.1,0.3],[1.0,1.2],[1.0,1.9],[1.5,2.0])
+        
+    
     """
 
     plt.tight_layout()
@@ -79,35 +84,119 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
         ax.plot([zoom_x[0],zoom_x[1],zoom_x[1],zoom_x[0],zoom_x[0]],[zoom_y[0],zoom_y[0],zoom_y[1],zoom_y[1],zoom_y[0]],color=box_color,alpha=box_alpha,linewidth=0.4)
 
     if connect:
-        # estimate the width of the ticks
-        spacing_zoom = (ax.transData.inverted()).transform_point((spacing_zoom,0))[0]-(ax.transData.inverted()).transform_point((0,0))[0]
-        spacing_axes = (ax.transData.inverted()).transform_point((spacing_axes,0))[0]-(ax.transData.inverted()).transform_point((0,0))[0]
         
-        if zoom_x[1] < axes_x[0]:
-            # the zoom box is on the left
-            x_connect_bot = [zoom_x[1] + spacing_zoom , axes_x[0] - 0.3*spacing_axes]
-            x_connect_top = [zoom_x[1] + spacing_zoom , axes_x[0] - 0.3*spacing_axes]
-            y_connect_bot = np.interp(x_connect_bot,[zoom_x[1],axes_x[0]],[zoom_y[0],axes_y[0]])
-            y_connect_top = np.interp(x_connect_top,[zoom_x[1],axes_x[0]],[zoom_y[1],axes_y[1]])
-            
-            if y_connect_bot[1] > axes_y[0]:
-                x_connect_bot = [zoom_x[1] + spacing_zoom , axes_x[0] - spacing_axes]
-                y_connect_bot = np.interp(x_connect_bot,[zoom_x[1],axes_x[0]],[zoom_y[0],axes_y[0]])
-            
-            if y_connect_top[1] < axes_y[1]:
-                x_connect_top = [zoom_x[1] + spacing_zoom , axes_x[0] - spacing_axes]
-                y_connect_top = np.interp(x_connect_top,[zoom_x[1],axes_x[0]],[zoom_y[1],axes_y[1]])
+        # define a box of points of the axes and the zoom
+        zoom_xx = [zoom_x[0],zoom_x[0],zoom_x[1],zoom_x[1]]
+        zoom_yy = [zoom_y[0],zoom_y[1],zoom_y[1],zoom_y[0]]
+        axes_xx = [axes_x[0],axes_x[0],axes_x[1],axes_x[1]]
+        axes_yy = [axes_y[0],axes_y[1],axes_y[1],axes_y[0]]
+        
+        # determine which points to connect
+        if axes_x[1] < zoom_x[0]:
+            # left
+            if axes_y[0] > zoom_y[1]:
+                # top
+                p1 = 0
+                p2 = 2
+            elif axes_y[1] < zoom_y[0]:
+                # bottom
+                p1 = 1
+                p2 = 3
+            else:
+                # center
+                p1 = 2
+                p2 = 3
+        
+        elif axes_x[0] > zoom_x[1]:
+            # right
+            if axes_y[0] > zoom_y[1]:
+                # top
+                p1 = 1
+                p2 = 3
+            elif axes_y[1] < zoom_y[0]:
+                # bottom
+                p1 = 0
+                p2 = 2
+            else:
+                # center
+                p1 = 0
+                p2 = 1
                 
         else:
-            # the zoom box is on the right
-            # the zoom box is on the left
-            x_connect_bot = [axes_x[1] + 0.3*spacing_axes , zoom_x[0] - spacing_zoom]
-            x_connect_top = [axes_x[1] + 0.3*spacing_axes , zoom_x[0] - spacing_zoom]
-            y_connect_bot = np.interp(x_connect_bot,[axes_x[1],zoom_x[0]],[axes_y[0],zoom_y[0]])
-            y_connect_top = np.interp(x_connect_top,[axes_x[1],zoom_x[0]],[axes_y[1],zoom_y[1]])
-            
-        ax.plot(x_connect_bot,y_connect_bot,color=connect_color,alpha=connect_alpha,linewidth=0.4)
-        ax.plot(x_connect_top,y_connect_top,color=connect_color,alpha=connect_alpha,linewidth=0.4)
+            # center
+            if axes_y[0] > zoom_y[1]:
+                # top
+                p1 = 0
+                p2 = 3
+            elif axes_y[1] < zoom_y[0]:
+                # bottom
+                p1 = 1
+                p2 = 2
+            else:
+                # center, the axes is over the zoom
+                p1 = 0
+                p2 = 0
+
+        
+        line1 = ([zoom_xx[p1],axes_xx[p1]],[zoom_yy[p1],axes_yy[p1]])
+        line2 = ([zoom_xx[p2],axes_xx[p2]],[zoom_yy[p2],axes_yy[p2]])
+        
+       
+        # estimate the width and height of the ticks
+        tick_width  = (ax.transData.inverted()).transform_point((tick_width,0))[0]-(ax.transData.inverted()).transform_point((0,0))[0]
+        tick_height = (ax.transData.inverted()).transform_point((0,tick_height))[1]-(ax.transData.inverted()).transform_point((0,0))[1]
+        spacing     = (ax.transData.inverted()).transform_point((spacing,0))[0]-(ax.transData.inverted()).transform_point((0,0))[0]
+        
+        # create fictional boxes around the axes where no lines should be
+        box_axes_x = [ axes_x[0]-tick_width , axes_x[1]+spacing]
+        box_axes_y = [ axes_y[0]-tick_height , axes_y[1]+spacing]
+        
+        box_zoom_x = [ zoom_x[0]-spacing , zoom_x[1]+spacing]
+        box_zoom_y = [ zoom_y[0]-spacing , zoom_y[1]+spacing]
+        
+
+        
+        # cut the lines inside the boxes
+        t = np.linspace(0,1,100)
+        
+        line1_cut = line1
+        line2_cut = line2
+        for tt in t:
+            x = line1[0][0]*(1-tt) + line1[0][1]*tt
+            y = line1[1][0]*(1-tt) + line1[1][1]*tt
+            if x <= box_zoom_x[0] or x >= box_zoom_x[1] or y <= box_zoom_y[0] or y >= box_zoom_y[1]:
+                line1_cut[0][0] = x
+                line1_cut[1][0] = y
+                break
+        
+        for tt in t[::-1]:
+            x = line1[0][0]*(1-tt) + line1[0][1]*tt
+            y = line1[1][0]*(1-tt) + line1[1][1]*tt
+            if (x <= box_axes_x[0] or x >= box_axes_x[1]) or (y <= box_axes_y[0] or y >= box_axes_y[1]):
+                line1_cut[0][1] = x
+                line1_cut[1][1] = y
+                break
+        
+        for tt in t:
+            x = line2[0][0]*(1-tt) + line2[0][1]*tt
+            y = line2[1][0]*(1-tt) + line2[1][1]*tt
+            if (x <= box_zoom_x[0] or x >= box_zoom_x[1]) or (y <= box_zoom_y[0] or y >= box_zoom_y[1]):
+                line2_cut[0][0] = x
+                line2_cut[1][0] = y
+                break
+        
+        for tt in t[::-1]:
+            x = line2[0][0]*(1-tt) + line2[0][1]*tt
+            y = line2[1][0]*(1-tt) + line2[1][1]*tt
+            if (x <= box_axes_x[0] or x >= box_axes_x[1]) or (y <= box_axes_y[0] or y >= box_axes_y[1]):
+                line2_cut[0][1] = x
+                line2_cut[1][1] = y
+                break
+                 
+        # draw the connecting lines         
+        ax.plot(line1_cut[0],line1_cut[1],color=connect_color,alpha=connect_alpha,linewidth=0.4)
+        ax.plot(line2_cut[0],line2_cut[1],color=connect_color,alpha=connect_alpha,linewidth=0.4)
+        
 
     return ax1
 

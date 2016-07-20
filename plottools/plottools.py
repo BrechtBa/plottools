@@ -22,6 +22,12 @@ import numpy as np
 import itertools
 
 def set_publication_rc():
+    """
+    Sets rc parameters for creating plots suitable for publication
+    
+    Example:
+        plottools.set_publication_rc()
+    """
     # figure
     plt.rc('figure', autolayout=True, figsize=(80/25.4,50/25.4))
     plt.rc('savefig', format='pdf', dpi=150, bbox='tight', pad_inches=0.01)
@@ -39,12 +45,55 @@ def set_publication_rc():
     # text
     plt.rc('text', usetex=True)
     # ticks
-    plt.rc('xtick.major', size=3, width=0.3, pad=3)
-    plt.rc('ytick.major', size=3, width=0.3, pad=3)
-    plt.rc('xtick.minor', size=2, width=0.3, pad=3)
-    plt.rc('ytick.minor', size=2, width=0.3, pad=3)
+    plt.rc('xtick.major', size=2, width=0.3, pad=3)
+    plt.rc('ytick.major', size=2, width=0.3, pad=3)
+    plt.rc('xtick.minor', size=1, width=0.3, pad=3)
+    plt.rc('ytick.minor', size=1, width=0.3, pad=3)
     
     
+def set_style(style,axes=None):
+    """
+    Sets the style of a single axes object from some specification on top of other rc parameters
+    
+    Arguments:
+        style:          string, style string 'horizontalgrid','horizontalgridwithoutticks'
+        axes=None:      matplotlib axes object
+        
+    Returns:
+        
+    Example:
+        plottools.set_style('horizontalgrid')
+    """
+    
+    if axes == None:
+        axes = plt.gca()
+        
+    if style in ['horizontalgrid','horizontalgridwithoutticks']:
+        # hide the spines except the bottom one
+        axes.spines['top'].set_visible(False)
+        # axes.spines['bottom'].set_visible(False)
+        axes.spines['right'].set_visible(False)
+        axes.spines['left'].set_visible(False)
+
+        # show ticks only on the left bottom  
+        axes.get_xaxis().tick_bottom()
+        axes.get_yaxis().tick_left()
+        
+        # add horizontal lines
+        yticks = axes.get_yticks()
+        xlim = axes.get_xlim()
+        
+        for y in yticks:
+            axes.plot(xlim, [y,y], '-', linewidth=0.3, color='k', alpha=0.3, zorder=-10)
+        
+        axes.yaxis.set_tick_params(which='both', bottom='off', top='off', labelbottom='on', left='off', right='off', labelleft='on')         
+        
+        
+    if style == 'horizontalgridwithoutticks':
+        axes.xaxis.set_tick_params(which='both', bottom='off', top='off', labelbottom='on', left='off', right='off', labelleft='on')
+        
+                 
+              
 def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alpha=0.8,connect=True,connect_color='k',connect_alpha=0.3,spacing=4,tick_width=20,tick_height=12):
     """
     Creates a new axes which zooms in on a part of a given axes.
@@ -201,41 +250,3 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
 
     return ax1
 
-def set_style(style,axes=None):
-    """
-    
-    Arguments:
-        style:          string, style string 'verticalgridonly',
-        axes=None:      matplotlib axes object
-        
-    Returns:
-        
-    Example:
-        plottools.set_style()
-    """
-    
-    if axes == None:
-        axes = plt.gca()
-        
-    if style == 'verticalgridonly':
-        # hide the spines except the bottom one
-        axes.spines['top'].set_visible(False)
-        # axes.spines['bottom'].set_visible(False)
-        axes.spines['right'].set_visible(False)
-        axes.spines['left'].set_visible(False)
-
-        # show ticks only on the left bottom  
-        axes.get_xaxis().tick_bottom()
-        axes.get_yaxis().tick_left()
-        
-        # add horizontal lines
-        yticks = axes.get_yticks()
-        xlim = axes.get_xlim()
-        
-        for y in yticks:
-            axes.plot(xlim, [y,y], '-', linewidth=0.5, color='k', alpha=0.3, zorder=-10)
-                 
-        axes.xaxis.set_tick_params(which='both', bottom='off', top='off', labelbottom='on', left='off', right='off', labelleft='on')
-        axes.yaxis.set_tick_params(which='both', bottom='off', top='off', labelbottom='on', left='off', right='off', labelleft='on')         
-                 
-             

@@ -3,27 +3,27 @@ import matplotlib.patches as patches
 import numpy as np
 
 import plottools as pt
+from plottools.linearize_greyscale import to_greyscale
 
-
-# get the grayscale values of all colors
+# get the greyscale values of all colors
 n = len(pt.color.cycle)
 
 colors = []
 names = []
-grayscales = []
+greyscales = []
 for i in range(n):
     names.append( pt.color.cycle[i] )
     colors.append( pt.color[i] )
-    grayscales.append(  0.21*pt.color[i][0] + 0.72*pt.color[i][1] + 0.07*pt.color[i][2] )
+    greyscales.append(  np.mean(to_greyscale(pt.color[i])) )
     
 colors = np.array(colors)
 names = np.array(names)
-grayscales = np.array(grayscales)
+greyscales = np.array(greyscales)
 
 
-index = np.argsort( grayscales )
+index = np.argsort( greyscales )
 
-# create a figure with the colors sorted by grayscale
+# create a figure with the colors sorted by greyscale
 fig = plt.figure()
 ax = fig.add_subplot(111)
 for i,ind in enumerate(index):
@@ -33,11 +33,11 @@ plt.xlim([0,n])
 plt.ylim([0,5])
 
 
-# plot the grayscale values in order
+# plot the greyscale values in order
 plt.figure()
-plt.plot(np.arange(n),grayscales[index],'o',color=pt.color['k'])
+plt.plot(np.arange(n),greyscales[index],'o',color=pt.color['k'])
 for i,ind in enumerate(index):
-    plt.text(i+0.12,grayscales[ind],names[ind])
+    plt.text(i+0.12,greyscales[ind],names[ind])
 
 plt.xlim([0,n])
 plt.ylim([0.0,0.9])

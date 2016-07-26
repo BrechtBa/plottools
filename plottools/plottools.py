@@ -142,13 +142,13 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
         axes_yy = [axes_y[0],axes_y[1],axes_y[1],axes_y[0]]
         
         # determine which points to connect
-        if axes_x[1] < zoom_x[0]:
+        if axes_x[1] < zoom_x[1]:
             # left
-            if axes_y[0] > zoom_y[1]:
+            if axes_y[0] > zoom_y[0]:
                 # top
                 p1 = 0
                 p2 = 2
-            elif axes_y[1] < zoom_y[0]:
+            elif axes_y[1] < zoom_y[1]:
                 # bottom
                 p1 = 1
                 p2 = 3
@@ -157,13 +157,13 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
                 p1 = 2
                 p2 = 3
         
-        elif axes_x[0] > zoom_x[1]:
+        elif axes_x[0] > zoom_x[0]:
             # right
-            if axes_y[0] > zoom_y[1]:
+            if axes_y[0] > zoom_y[0]:
                 # top
                 p1 = 1
                 p2 = 3
-            elif axes_y[1] < zoom_y[0]:
+            elif axes_y[1] < zoom_y[1]:
                 # bottom
                 p1 = 0
                 p2 = 2
@@ -174,11 +174,11 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
                 
         else:
             # center
-            if axes_y[0] > zoom_y[1]:
+            if axes_y[0] > zoom_y[0]:
                 # top
                 p1 = 0
                 p2 = 3
-            elif axes_y[1] < zoom_y[0]:
+            elif axes_y[1] < zoom_y[1]:
                 # bottom
                 p1 = 1
                 p2 = 2

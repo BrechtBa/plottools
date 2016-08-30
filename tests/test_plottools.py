@@ -17,7 +17,14 @@
 #    along with plottools.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
-from __version__ import version as __version__
-from plottools import *
-from plotcolor import *
-import cm
+import unittest
+
+import plottools
+
+class TestPlottools(unittest.TestCase):
+
+    def test_version(self):
+        self.assertGreater( len(plottools.__version__), 0 )
+
+if __name__ == '__main__':
+    unittest.main()

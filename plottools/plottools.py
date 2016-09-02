@@ -41,7 +41,7 @@ def set_publication_rc():
     # lines
     plt.rc('lines', linewidth=0.8,markersize=4)
     # patch
-    plt.rc('patch', linewidth=0.4, edgecolor=(0.3,0.3,0.3))
+    plt.rc('patch', linewidth=0.4, edgecolor=(1.0,1.0,1.0))
     # text
     plt.rc('text', usetex=True)
     # ticks
@@ -312,7 +312,7 @@ def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,siz
                 
                 if not j in linepositions:
                     # add the separator line
-                    plt.annotate('',xy=(xticks[j]-0.5*dxticks[j], ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',arrowprops={'arrowstyle':'-'})
+                    plt.annotate('',xy=(xticks[j]-0.5*dxticks[j], ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',arrowprops={'arrowstyle':'-','color':(0.3,0.3,0.3)})
                     linepositions.append(j)
                     
                 if not xticklabel_old==None:
@@ -336,7 +336,7 @@ def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,siz
     # add the final separator line
     i = len(xticklabels)-1
     j = len(xticklabels[-1])-1
-    plt.annotate('',xy=(xticks[j]+0.5*dxticks[j], ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',arrowprops={'arrowstyle':'-'})
+    plt.annotate('',xy=(xticks[j]+0.5*dxticks[j], ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',arrowprops={'arrowstyle':'-','color':(0.3,0.3,0.3)})
     linepositions.append(j)
        
     # add the ticklabelnames

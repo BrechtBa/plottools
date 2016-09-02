@@ -250,3 +250,97 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
 
     return ax1
 
+
+    
+    
+def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,size=None,rotation=None):
+    """
+    creates a bar plot with categories on the x-axis
+    
+    Parameters:
+        values:
+        ...
+    """
+    
+    # input parsing
+    if xticklabelnames == None:
+        xticklabelnames = ['']*len(xticklabels)
+    
+    if fmt == None:
+        fmt = ['{}']*len(xticklabels)
+
+    if size == None:
+        size = [plt.gca().xaxis.get_major_ticks()[0].label.get_fontsize()]*len(xticklabels)
+        
+    if rotation == None:
+        rotation = [0]*len(xticklabels)
+
+    
+    dxticks = np.zeros_like(xticks)
+    for i in range(len(xticks)-1):
+        dxticks[i] = xticks[i+1]-xticks[i]
+    dxticks[-1] = dxticks[-2]
+    
+    # set the x limits
+    plt.xlim([xticks[0]-dxticks[0]/2,xticks[-1]+dxticks[-1]/2])
+    
+    # get both axis limits
+    xlim = plt.xlim()
+    ylim = plt.ylim()
+    
+    
+    
+    # create a list of y positions in points
+    yp = []
+    ypi = -1
+
+    for i in range(len(xticklabels)):
+        ypi += -1.4*size[i] - 1*size[i]*np.sin(1.*rotation[i]/180*np.pi)
+        yp.append( ypi )
+
+    # manual xticks and labels
+    plt.xticks([])
+    
+    linepositions = []    
+    for i in range(len(xticklabels)-1,0,-1):
+        c = xticklabels[i]
+        xtick_old = None
+        xticklabel_old = None
+
+        for j,xtl in enumerate(c):
+            if not xtl == xticklabel_old:
+                
+                if not j in linepositions:
+                    # add the separator line
+                    plt.annotate('',xy=(xticks[j]-0.5*dxticks[j], ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',arrowprops={'arrowstyle':'-'})
+                    linepositions.append(j)
+                    
+                if not xticklabel_old==None:
+                    # add the tick label
+                    xtick_avg = 0.5*(xtick_old - 0.5*dxticks[j]) + 0.5*(xticks[j] - 0.5*dxticks[j])
+                    plt.annotate(fmt[i].format(xticklabel_old),xy=(xtick_avg, ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',ha="center", va="bottom", size=size[i], rotation=rotation[i])
+                
+                xtick_old = xticks[j]
+                xticklabel_old = xtl
+                    
+        # add the final tick label
+        j = len(c)-1
+        xtick_avg = 0.5*(xtick_old - 0.5*dxticks[j]) + 0.5*(xticks[j] + 0.5*dxticks[j])
+        plt.annotate(fmt[i].format(xticklabel_old),xy=(xtick_avg, ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',ha="center", va="bottom", size=size[i], rotation=rotation[i])
+           
+    # add the deepest ticklabel
+    i = 0
+    for j,xtl in enumerate(xticklabels[i]):
+        plt.annotate(fmt[i].format(xtl),xy=(xticks[j], ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',ha="center", va="bottom", size=size[i], rotation=rotation[i])
+        
+    # add the final separator line
+    i = len(xticklabels)-1
+    j = len(xticklabels[-1])-1
+    plt.annotate('',xy=(xticks[j]+0.5*dxticks[j], ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',arrowprops={'arrowstyle':'-'})
+    linepositions.append(j)
+       
+    # add the ticklabelnames
+    xp = 3
+    for i,l in enumerate(xticklabelnames):
+        plt.annotate(l,xy=(xlim[0], ylim[0]), xycoords='data',xytext=(-xp, yp[i]+0.1*size[i]), textcoords='offset points',ha="right", va="bottom", size=size[i])
+

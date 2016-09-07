@@ -25,8 +25,15 @@ def set_publication_rc():
     """
     Sets rc parameters for creating plots suitable for publication
     
-    Example:
-        plottools.set_publication_rc()
+    Examples
+    --------
+    >>> plottools.set_publication_rc()
+    >>> plt.plot(np.arange(10),10*np.random.random(10))
+    >>> plt.xlabel('x-label')
+    >>> plt.ylabel('y-label')
+    >>> plt.savefig('example_publication_rc.pdf')
+    >>> plt.show()
+    
     """
     # figure
     plt.rc('figure', autolayout=True, figsize=(80/25.4,50/25.4))
@@ -55,14 +62,21 @@ def set_style(style,axes=None):
     """
     Sets the style of a single axes object from some specification on top of other rc parameters
     
-    Arguments:
-        style:          string, style string 'horizontalgrid','horizontalgridwithoutticks'
-        axes=None:      matplotlib axes object
+    Parameters
+    ----------
+        style : {'horizontalgrid','horizontalgridwithoutticks'}
+            style string 'horizontalgrid','horizontalgridwithoutticks'
+            
+        axes=None : matplotlib axes object
+            the axes to which to apply the style, if omitted the current axis 
+            obtained with plt.gca() it styled
         
-    Returns:
-        
-    Example:
-        plottools.set_style('horizontalgrid')
+    Examples
+    --------
+    >>> plt.plot(np.arange(10),10*np.random.random(10))
+    >>> plottools.set_style('horizontalgrid')
+    >>> plt.show()
+    
     """
     
     if axes == None:
@@ -97,23 +111,90 @@ def set_style(style,axes=None):
 def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alpha=0.8,connect=True,connect_color='k',connect_alpha=0.3,spacing=4,tick_width=20,tick_height=12):
     """
     Creates a new axes which zooms in on a part of a given axes.
-    Axes limits should not be changed after a zoom axes has been added
-    zoom_axes does not give the expected results when used on a subfigure
+    
+    A box is drawn around the area to be zoomed specified in data coordinates. A
+    new empty axes is created at the specified location, supplied in data
+    coordinates. The new axis limits are set so that they match the zoom box.
+    
+    The zoom box and axis can be connected with two lines, connecting the outer 
+    most corner points while leaving space for the axis ticks.
+   
 
-    Arguments:
-        fig:        matplotlib figure
-        ax:         matplotlib axes
-        zoom_x:     list, specifying the zooming horizontal area
-        zoom_y:     list, specifying the zooming vertical area
-        axes_x:     list, specifying the new axes horizontal location in data coordinates
-        axes_y:     list, specifying the new axes vertical location in data coordinates
-
-    Returns:
-        ax1:        a new axes
-
-    Example:
-        plottools.zoom_axes(fig,ax,[0.1,0.3],[1.0,1.2],[1.0,1.9],[1.5,2.0])
+    Parameters
+    ----------
+        fig : matplotlib figure
+            the figure in which to create a zoom axis
+            
+        ax : matplotlib axes
+            the axis in which to create a zoom axis
+            
+        zoom_x : list
+            [min, max] specifying the zooming horizontal area in data 
+            coordinates 
+            
+        zoom_y : list
+            [min, max] specifying the zooming vertical area in data coordinates 
+            
+        axes_x : list
+            [min, max] specifying the new axes horizontal location in data
+            coordinates 
         
+        axes_y : list
+            [min, max] specifying the new axes vertical location in data
+            coordinates 
+        
+        box : bool, optional 
+            specifies whether a box is drawn
+        
+        box_color : color string or tuple,optional 
+            specifies the box color
+            
+        box_alpha : number 
+            between 0 and 1, specifies the box alpha   
+
+        connect : bool, optional 
+            specifies whether the connecting lines are drawn
+        
+        connect_color : color string or tuple,optional 
+            specifies the connecting lines color
+            
+        connect_alpha : number 
+            between 0 and 1, specifies the connecting lines alpha  
+            
+        spacing : number
+            specifies the spacing between the box, axis and the connecting lines
+            in points
+        
+        tick_width : number
+            specifies the width of the tick labels in points to avoid drawing
+            connecting lines through the tick labels
+        
+        tick_height : number
+            specifies the height of the tick labels in points to avoid drawing
+            connecting lines through the tick labels
+            
+            
+    Returns
+    -------
+        ax_zoom : matplotlib axes 
+            the new axes
+
+    Notes
+    -----
+    * Axes limits should not be changed after a zoom axes has been added
+    * :code:`zoom_axes` does not give the expected results when used on a
+      subfigure
+    
+    Examples
+    --------
+    >>> fig,ax = plt.subplots()
+    >>> x = np.linspace(0,1,100)
+    >>> y = 1-x + 0.02*(2*np.random.random(len(x))-1)
+    >>> ax.plot(x,y)
+    >>> ax_zoom = plottools.zoom_axes(fig,ax,[0.1,0.2],[0.8,0.9],[0.6,0.9],[0.6,0.9])
+    >>> ax_zoom.plot(x,y)
+    >>> plt.show()
+    
     """
 
     plt.tight_layout()
@@ -255,15 +336,69 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
     
 def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,size=None,rotation=None,spacing=1.4):
     """
-    creates a bar plot with categories on the x-axis
+    Creates categorized ticks on the x-axis
     
     Parameters
     ----------
-        xticks : 
+        xticks : array-like
+            The x-locations of the data points
             
+        xticklabels : list of array-likes
+            A list of lists or arrays of which each must have the same length as
+            xticks. These are all used as x-tick labels, the first array is
+            displayed highest, the next arrays are printed below the previous
+            one. Results are the most appealing if the 1st array has the highest
+            variation and the last array the lowest.
         
+        xticklabelnames: list of strings, optional
+            A list of names for the labels. It must have the same length as the
+            xticklabels list.
+         
+        fmt: list of fromat strings, optional
+            A list of fromatting strings as used by :code:`format` for the tick
+            labels. It must have the same length as the xticklabels list.
+            
+        size: list of numbers, optional
+            A list of numbers specifying the size of the ticklabels in points. 
+            It must have the same length as the xticklabels list.
+
+        rotation: list of numbers, optional
+            A list of numbers specifying the rotation of the ticklabels in
+            degrees. It must have the same length as the xticklabels list.  
+            
+        spacing: number, optional
+            Controls the vertical spacing between the differnt ticklabels
+            
     Examples
     --------
+    >>> # generate data
+    >>> C,B,A = np.meshgrid([10,20],[0.4,0.6,0.8],[1,2,3],indexing='ij')
+    >>> xticklabels = [ A.reshape((-1,)), B.reshape((-1,)), C.reshape((-1,)) ]
+    >>> values = [np.random.random(len(t)) for t in xticklabels]
+    >>> xticks = np.arange(len(values[0]))
+    >>> 
+    >>> xticklabelnames = ['coord','$B_\mathrm{value}$','CCC']
+    >>> labels = ['set1','set2','set3']
+    >>> fmt = ['${:.2f}$','${}$ m','$10^{{{:.0f}}}$']
+    >>> rotation = [70,0,0]
+    >>> 
+    >>> # create the figure
+    >>> plt.figure()
+    >>> bottom = np.zeros_like(values[0])
+    >>> for val,lab in zip(values,labels):
+    ...     plt.bar(xticks+0.05,val,0.9,bottom=bottom,label=lab,color=pt.color.next())
+    ...     bottom += val
+    ...
+    >>> 
+    >>> plt.legend(framealpha=0.7,loc='upper right')
+    >>> plt.ylabel('y-label')
+    >>> 
+    >>> # add categories on the x-axis
+    >>> plottools.categorized_xticklabels(xticks+0.5,xticklabels,xticklabelnames=xticklabelnames,fmt=fmt,rotation=rotation)
+    >>> plt.tight_layout()
+    >>> plt.savefig('categorized_xticklabels.pdf')
+    >>> plt.show()
+    
     """
     
     # input parsing

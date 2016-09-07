@@ -69,26 +69,47 @@ basecycle = ['b','g','r','o','y','l','p','a','k']
 # Colorscheme class 
 ################################################################################
 class Colorscheme(object):
-    def __init__(self,colors=basecolors,longnames=longnames,cycle=basecycle):
+    """
+    A colorscheme class useful for plotting
+   
+    """
+    
+    def __init__(self,colors,longnames=None,cycle=None):
         """
         defines a colorscheme object useful for plotting
         
-        Arguments:
-        colors: dict, dictionary of named colors as RGB (0-1) tupples
-        cycle:  list, list with the cycle order
+        Arguments
+        ---------
+        colors : dict
+            Dictionary of named colors as RGB (0-1) tupples
         
-        Example:
-        cs = Colorscheme({'r':(1.,0.,0.),'g':(0.,1.,0.),'b':(0.,0.,1.)},['b','g','r'])
-        print( cs[0] )
+        longnames : dict, optional
+            Dictionary of long names of the colors specified in colors
+            
+        cycle : list, optional
+            List with the cycle order
         
-        print( cs.next() )
-        print( cs.next() )
-        
-        cs.reset_index()
-        print( cs.next() )
+        Examples
+        --------
+        >>> cs = Colorscheme({'r':(1.,0.,0.),'g':(0.,1.,0.),'b':(0.,0.,1.)},['b','g','r'])
+        >>> print( cs[0] )
+        >>> 
+        >>> print( cs.next() )
+        >>> print( cs.next() )
+        >>> 
+        >>> cs.reset_index()
+        >>> print( cs.next() )
         """
         
-        self.colors = colors
+        
+        if longnames == None:
+            longnames = {k:k for k in colors.keys()}
+            
+        if cycle == None:
+            cycle = colors.keys()
+            
+            
+        self.colors = colors    
         self.longnames = longnames
         self.cycle = cycle
         self.currentindex = 0
@@ -132,13 +153,18 @@ class Colorscheme(object):
                     
     def to_svg(self,filename):
         """
-        converts the colorscheme to an svg file
+        converts the colorscheme to an svg file with block of colors ordered
+        according to the cycle
         
-        Arguments:
-            filename: 	string, the file to write the svg file to
+        parameters
+        ----------
+            filename : string
+                the file to write the svg file to
          
-        Example:
-            plottools.colors.to_svg('defaultcolors.svg')
+        Examples
+        --------
+        >>>> plottools.colors.to_svg('defaultcolors.svg')
+        
         """
 	
         # get the colors of the colorscheme
@@ -176,5 +202,5 @@ class Colorscheme(object):
 ################################################################################
 # create default color schemes
 ################################################################################
-color = Colorscheme()
-lightcolor = Colorscheme(colors=lightcolors)
+color = Colorscheme(basecolors,longnames=longnames,cycle=basecycle)
+lightcolor = Colorscheme(lightcolors,longnames=longnames,cycle=basecycle)

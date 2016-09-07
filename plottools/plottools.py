@@ -30,7 +30,7 @@ def set_publication_rc():
     """
     # figure
     plt.rc('figure', autolayout=True, figsize=(80/25.4,50/25.4))
-    plt.rc('savefig', format='pdf', dpi=150, bbox='tight', pad_inches=0.01)
+    plt.rc('savefig', format='pdf', dpi=150, bbox='tight', pad_inches=0.02)
     # font
     plt.rc('font', family='serif', serif=['computer modern roman'], size=6)
     # axes
@@ -253,13 +253,17 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
 
     
     
-def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,size=None,rotation=None):
+def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,size=None,rotation=None,spacing=1.4):
     """
     creates a bar plot with categories on the x-axis
     
-    Parameters:
-        values:
-        ...
+    Parameters
+    ----------
+        xticks : 
+            
+        
+    Examples
+    --------
     """
     
     # input parsing
@@ -295,7 +299,7 @@ def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,siz
     ypi = -1
 
     for i in range(len(xticklabels)):
-        ypi += -1.4*size[i] - 1*size[i]*np.sin(1.*rotation[i]/180*np.pi)
+        ypi += -spacing*size[i] - 1*size[i]*np.sin(1.*rotation[i]/180*np.pi)
         yp.append( ypi )
 
     # manual xticks and labels

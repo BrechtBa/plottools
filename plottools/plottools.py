@@ -38,8 +38,13 @@ def set_publication_rc():
     # figure
     plt.rc('figure', autolayout=True, figsize=(80/25.4,50/25.4))
     plt.rc('savefig', format='pdf', dpi=150, bbox='tight', pad_inches=0.02)
+    # text
+    plt.rc('text', usetex=True)
     # font
-    plt.rc('font', family='serif', serif=['computer modern roman'], size=6)
+    plt.rc('font', size=6) 
+    plt.rc('font', **{'family':'sans-serif', 'sans-serif':['computer modern sans serif']} )
+    # set all text to sans serif
+    plt.rc('text.latex', preamble=r'\usepackage{cmbright}')
     # axes
     plt.rc('axes', linewidth=0.4, labelsize=8)
     plt.rc('axes.formatter', useoffset=False)
@@ -49,13 +54,13 @@ def set_publication_rc():
     plt.rc('lines', linewidth=0.8,markersize=4)
     # patch
     plt.rc('patch', linewidth=0.4, edgecolor=(1.0,1.0,1.0))
-    # text
-    plt.rc('text', usetex=True)
     # ticks
     plt.rc('xtick.major', size=2, width=0.3, pad=3)
     plt.rc('ytick.major', size=2, width=0.3, pad=3)
     plt.rc('xtick.minor', size=1, width=0.3, pad=3)
     plt.rc('ytick.minor', size=1, width=0.3, pad=3)
+    
+    
     
     
 def set_style(style,axes=None):

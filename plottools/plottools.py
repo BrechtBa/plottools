@@ -25,6 +25,13 @@ def set_publication_rc():
     """
     Sets rc parameters for creating plots suitable for publication
     
+    Notes
+    -----
+    The computer modern fonts are not installed by default on windows. But can
+    be downloaded at https://sourceforge.net/projects/cm-unicode/
+    To use new installed fonts in matplotlib you must delete the font cache file
+    located at C:\Users\yourusername\.matplotlib
+    
     Examples
     --------
     >>> plottools.set_publication_rc()
@@ -35,31 +42,36 @@ def set_publication_rc():
     >>> plt.show()
     
     """
+    
     # figure
     plt.rc('figure', autolayout=True, figsize=(80/25.4,50/25.4))
     plt.rc('savefig', format='pdf', dpi=150, bbox='tight', pad_inches=0.02)
+    
     # text
-    plt.rc('text', usetex=True)
+    #plt.rc('text', usetex=True)
+    
     # font
     plt.rc('font', size=6) 
-    plt.rc('font', **{'family':'sans-serif', 'sans-serif':['computer modern sans serif']} )
-    # set all text to sans serif
-    plt.rc('text.latex', preamble=r'\usepackage{cmbright}')
+    plt.rc('font', **{'family':'sans-serif', 'sans-serif':['computer modern sans serif', 'CMU Sans Serif'], 'serif':['computer modern roman', 'CMU Serif']} )
+
     # axes
     plt.rc('axes', linewidth=0.4, labelsize=8)
     plt.rc('axes.formatter', useoffset=False)
+    
     # legend
     plt.rc('legend', fontsize=8, frameon=True)
+    
     # lines
     plt.rc('lines', linewidth=0.8,markersize=4)
+    
     # patch
     plt.rc('patch', linewidth=0.4, edgecolor=(1.0,1.0,1.0))
+    
     # ticks
     plt.rc('xtick.major', size=2, width=0.3, pad=3)
     plt.rc('ytick.major', size=2, width=0.3, pad=3)
     plt.rc('xtick.minor', size=1, width=0.3, pad=3)
     plt.rc('ytick.minor', size=1, width=0.3, pad=3)
-    
     
     
     

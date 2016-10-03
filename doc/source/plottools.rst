@@ -1,29 +1,28 @@
 plottools
 =========
 
-
 .. currentmodule:: plottools
 
-Style functions
----------------
-
-.. autosummary::
-    :toctree: generated
-    
-    set_publication_rc
-    set_style
-    
-    
 Plot functions
 --------------
 
 .. autosummary::
+    :nosignatures:
     :toctree: generated
     
     categorized_xticklabels
     zoom_axes
     
-   
+    
+Style functions
+---------------
+
+.. autosummary::
+    :nosignatures:
+    :toctree: generated
+    
+    set_publication_rc
+    
    
 Classes
 --------------

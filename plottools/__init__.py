@@ -21,3 +21,4 @@ from __version__ import version as __version__
 from plottools import *
 from plotcolor import *
 import cm
+import style

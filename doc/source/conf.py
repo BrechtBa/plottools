@@ -34,6 +34,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.abspath('../..'))
+sys.path.append(os.path.abspath('sphinxext'))
 
 # import the version string
 from plottools.__version__ import version as __version__
@@ -43,6 +44,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
+    'matplotlib.sphinxext.plot_directive',
     'numpydoc',
 ]
 
@@ -361,3 +363,6 @@ texinfo_documents = [
 # texinfo_no_detailmenu = False
 
 autosummary_generate = True
+
+# -- Options for plot directive -------------------------------------------
+plot_include_source = True

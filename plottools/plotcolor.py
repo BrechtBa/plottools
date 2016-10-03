@@ -78,8 +78,8 @@ class Colorscheme(object):
         """
         defines a colorscheme object useful for plotting
         
-        Arguments
-        ---------
+        Parameters
+        ----------
         colors : dict
             Dictionary of named colors as RGB (0-1) tupples
         

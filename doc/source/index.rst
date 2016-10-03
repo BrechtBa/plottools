@@ -26,6 +26,7 @@ Contents:
    :maxdepth: 2
 
    plottools
+   style
    
 Indices and tables
 ==================

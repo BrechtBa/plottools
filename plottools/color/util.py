@@ -140,19 +140,17 @@ def prepare_print_scan(colors_rgb,order=None):
     fig = plt.figure(figsize=(16./2.54,24./2.54))
     ax1 = fig.add_subplot(211)
     plot_colors(ax1,colors_rgb,order)
-    plt.title('color')
+    plt.title('print color')
 
     ax2 = fig.add_subplot(212)
     plot_colors(ax2,colors_grey_rgb,order)  
-    plt.title('greyscale')
+    plt.title('print greyscale')
 
 
 def analyse_print_scan(scanfile,colors_rgb,order=None):
 
     im = Image.open(scanfile).convert('RGB')
 
-    print(im.size)
-    
     if order == None:
         order = {}
         for i,k in enumerate(coldict.keys()):
@@ -187,11 +185,11 @@ def analyse_print_scan(scanfile,colors_rgb,order=None):
     fig = plt.figure(figsize=(16./2.54,24./2.54))
     ax1 = fig.add_subplot(211)
     plot_colors(ax1,rgb_color,order)
-    plt.title('color')
+    plt.title('scan color')
 
     ax2 = fig.add_subplot(212)
     plot_colors(ax2,rgb_greyscale,order)  
-    plt.title('greyscale')
+    plt.title('scan greyscale')
     
     
     # compare the printed values with to_greyscale
@@ -222,6 +220,7 @@ def analyse_print_scan(scanfile,colors_rgb,order=None):
     plt.xlim([-0.5,len(colors_rgb)-1+0.5])
     plt.ylim([-0.02,1.02])
 
+
 if __name__ == '__main__':
 
     colors_rgb = {
@@ -229,8 +228,8 @@ if __name__ == '__main__':
         'o': (244./255,154./255, 26./255),
         'y': (242./255,244./255, 66./255),
         'g': ( 32./255, 81./255, 37./255),
-        'l': ( 80./255,180./255, 54./255),
-        'a': ( 95./255,173./255,209./255),
+        #'l': ( 80./255,180./255, 54./255),
+        #'a': ( 95./255,173./255,209./255),
         'b': ( 31./255, 57./255,101./255),
         'p': (114./255, 31./255,119./255),
         'k': ( 49./255, 49./255, 49./255)
@@ -243,9 +242,9 @@ if __name__ == '__main__':
         'r': 3,
         'g': 4,
         'o': 5,
-        'l': 6,
-        'a': 7,
-        'y': 8
+        #'l': 6,
+        #'a': 7,
+        'y': 6
     }
 
     print('\nbase colors:')

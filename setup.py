@@ -25,6 +25,6 @@ setup(
     author='Brecht Baeten',
     author_email='brecht.baeten@gmail.com',
     packages=find_packages(),
-    install_requires=['numpy','matplotlib'],
+    install_requires=['numpy','matplotlib','colorspacious'],
     classifiers=['Programming Language :: Python :: 2.7'],
 )

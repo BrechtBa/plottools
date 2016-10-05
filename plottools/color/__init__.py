@@ -17,8 +17,13 @@
 #    along with plottools.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
-from .__version__ import version as __version__
-from .plottools import *
-import color
-import cm
-import style
+from .colorscheme import *
+from .util import *
+from .default import *
+
+################################################################################
+# create default color schemes
+################################################################################
+default = Colorscheme(basecolors,longnames=longnames,cycle=basecycle)
+defaultlight = Colorscheme(lightcolors,longnames=longnames,cycle=basecycle)
+

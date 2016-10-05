@@ -22,48 +22,6 @@ import os
 import matplotlib.pyplot as plt
 from cycler import cycler
 
-################################################################################
-# Color definitions
-################################################################################
-# colors that look ok and have considerable contrast in grayscale
-basecolors = {
-    'a': (177./255,215./255,233./255),
-    'b': ( 53./255, 97./255,172./255),
-    'g': ( 65./255,163./255, 75./255),
-    'k': ( 51./255, 51./255, 51./255),
-    'l': (123./255,209./255,101./255),
-    'o': (226./255,137./255, 11./255),
-    'p': (115./255, 31./255,121./255),
-    'r': (209./255, 47./255, 10./255),
-    'y': (236./255,238./255, 14./255)
-}
-
-lightcolors = {
-    'a': (206./255,230./255,241./255),
-    'b': (100./255,140./255,207./255),
-    'g': (104./255,195./255,113./255),
-    'k': (102./255,102./255,102./255),
-    'l': (168./255,225./255,153./255),
-    'o': (246./255,171./255, 64./255),
-    'p': (186./255, 51./255,194./255),
-    'r': (246./255,100./255, 67./255),
-    'y': (247./255,248./255,141./255)
-}
-    
-longnames = {
-    'black': 'k',
-    'purple': 'p',
-    'blue': 'b',
-    'green': 'g',
-    'red': 'r',
-    'orange': 'o',
-    'lime': 'l',
-    'aqua': 'a',
-    'yellow': 'y'
-}
-    
-basecycle = ['b','g','r','o','y','l','p','a','k']
-
 
 ################################################################################
 # Colorscheme class 
@@ -150,7 +108,7 @@ class Colorscheme(object):
             self.currentindex = self.cycle.index(key)+1
             return self.colors[key]
 
-                    
+    
     def to_svg(self,filename):
         """
         converts the colorscheme to an svg file with block of colors ordered
@@ -166,7 +124,7 @@ class Colorscheme(object):
         >>>> plottools.colors.to_svg('defaultcolors.svg')
         
         """
-	
+
         # get the colors of the colorscheme
         colors = ['#{:02x}{:02x}{:02x}'.format(int(self.colors[k][0]*255),int(self.colors[k][1]*255),int(self.colors[k][2]*255)) for k in self.cycle]
 
@@ -198,9 +156,3 @@ class Colorscheme(object):
         new_file.write(new_content)
         new_file.close()
 
-      
-################################################################################
-# create default color schemes
-################################################################################
-color = Colorscheme(basecolors,longnames=longnames,cycle=basecycle)
-lightcolor = Colorscheme(lightcolors,longnames=longnames,cycle=basecycle)

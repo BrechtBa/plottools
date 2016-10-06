@@ -22,14 +22,14 @@ rotation = [70,0,0]
 plt.figure()
 bottom = np.zeros_like(values[0])
 for val,lab in zip(values,labels):
-    plt.bar(xticks+0.05,val,0.9,bottom=bottom,label=lab,color=pt.color.next())
+    plt.bar(xticks+0.05,val,0.9,bottom=bottom,label=lab,color=pt.color.default.next())
     bottom += val
     
 plt.legend(framealpha=0.7,loc='upper right')
 plt.ylabel('y-label')
 
 # set the figure style
-pt.set_style('horizontalgridwithoutticks')   
+pt.style.set(['horizontalgrid','noxticks'])   
     
 # add categories on the x-axis
 pt.categorized_xticklabels(xticks+0.5,xticklabels,xticklabelnames=xticklabelnames,fmt=fmt,rotation=rotation)

@@ -46,8 +46,6 @@ for dy in [0.8,0,-0.8]:
         
         if not (dx==0 and dy==0):
         
-            #plt.subplot(3,3,count)
-            #plt.figure(figsize=(8/2.54,6/2.54))
             s = 2
             ax1 = pt.zoom_axes(fig,ax,[-0.2+dx,0.2+dx],[-0.2+dy,0.2+dy],[-0.4+s*dx,0.4+s*dx],[-0.4+s*dy,0.4+s*dy])
             draw_testlines()

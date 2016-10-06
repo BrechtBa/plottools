@@ -3,7 +3,7 @@ import matplotlib.patches as patches
 import numpy as np
 
 import plottools as pt
-from plottools.linearize_greyscale import to_greyscale
+from plottools.color.util import to_greyscale
 
 # get the greyscale values of all colors
 n = len(pt.color.default.cycle)

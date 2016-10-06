@@ -10,23 +10,15 @@ plottools
 
 A package with usefull tools for plotting with matplotlib
 
-Installation
-------------
-Install using the setup script
-
-.. code-block:: bash
-
-    python setup.py install
-
-    
-    
-Contents:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 3
 
-   plottools
-   style
+    installation
+    quickstart
+    reference
+    
+
    
 Indices and tables
 ==================

@@ -1,6 +1,7 @@
 style
-=========
-
+=====
+.. toctree::
+    :maxdepth: 3
 
 .. currentmodule:: plottools.style
 

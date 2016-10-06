@@ -115,7 +115,7 @@ def set(style,axes=None):
         >>> import numpy as np
         >>> import plottools
         >>> plt.plot(np.arange(10),10*np.random.random(10))
-        >>> plottools.style.set(['horizontalgrid','noticks'])
+        >>> plottools.style.set(['horizontalgrid','noxticks'])
         >>> plt.show()
     
     """

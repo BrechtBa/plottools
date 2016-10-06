@@ -1,6 +1,8 @@
 plottools
 =========
-
+.. toctree::
+    :maxdepth: 3
+    
 .. currentmodule:: plottools
 
 Plot functions
@@ -23,11 +25,3 @@ Style functions
     
     set_publication_rc
     
-   
-Classes
---------------
-
-.. autosummary::
-    :toctree: generated
-    
-    Colorscheme

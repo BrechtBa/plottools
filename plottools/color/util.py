@@ -163,38 +163,3 @@ def analyse_print_scan(scanfile,colors):
     plt.xlim([-0.5,len(order)-1+0.5])
     plt.ylim([-0.02,1.02])
     
-    
-if __name__ == '__main__':
-
-    colors_rgb = {
-        'r': (245./255, 82./255, 45./255),
-        'o': (244./255,154./255, 26./255),
-        'y': (242./255,244./255, 66./255),
-        'g': ( 32./255, 81./255, 37./255),
-        #'l': ( 80./255,180./255, 54./255),
-        #'a': ( 95./255,173./255,209./255),
-        'b': ( 31./255, 57./255,101./255),
-        'p': (114./255, 31./255,119./255),
-        'k': ( 49./255, 49./255, 49./255)
-    }
-
-    order = {
-        'k': 0,
-        'p': 1,
-        'b': 2,
-        'r': 3,
-        'g': 4,
-        'o': 5,
-        #'l': 6,
-        #'a': 7,
-        'y': 6
-    }
-
-    print('\nbase colors:')
-    distribute_greyscale_spacing(colors_rgb,0.20,0.90,order=order,plot=True)
-
-    print('\nlight colors:')
-    distribute_greyscale_spacing(colors_rgb,0.40,0.95,order=order,plot=True)
-
-    
-    plt.show()

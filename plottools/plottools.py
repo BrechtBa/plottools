@@ -422,7 +422,7 @@ def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,siz
         >>> plt.figure()
         >>> bottom = np.zeros_like(values[0])
         >>> for val,lab in zip(values,labels):
-        ...     plt.bar(xticks+0.05,val,0.9,bottom=bottom,label=lab,color=plottools.color.next())
+        ...     plt.bar(xticks+0.05,val,0.9,bottom=bottom,label=lab,color=plottools.color.default.next())
         ...     bottom += val
         ...
         >>> 

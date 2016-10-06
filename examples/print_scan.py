@@ -13,9 +13,11 @@ order = {
 }
 
 pt.color.prepare_print_scan(pt.color.default.colors,order=order)
-plt.savefig('print_color_default_inkjet.jpg')
+plt.savefig('print_scan_default.jpg')
 
 # print the image and then scan it
-pt.color.analyse_print_scan('scan_color_default_inkjet.jpg',pt.color.default.colors,order=order)
+pt.color.analyse_print_scan('print_scan_default_inkjet.jpg',pt.color.default.colors,order=order)
+
+pt.color.analyse_print_scan('print_scan_default_laserjet.jpg',pt.color.default.colors,order=order)
 
 plt.show()

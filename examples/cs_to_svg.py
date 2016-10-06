@@ -1,8 +1,6 @@
-import matplotlib.pyplot as plt
-import numpy as np
 
 import plottools as pt
 
-pt.color.to_svg('plottools_color.svg')
-
-pt.lightcolor.to_svg('plottools_lightcolor.svg')
+pt.color.default.to_svg('plottools_default_color.svg')
+pt.color.default.light.to_svg('plottools_default_light_color.svg')
+pt.color.default.dark.to_svg('plottools_default_dark_color.svg')

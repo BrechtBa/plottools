@@ -20,67 +20,53 @@
      id="layer1"
      style="display:inline">
     <rect
-       style="opacity:1;fill:#3764b2;fill-opacity:1;stroke:none;"
+       style="opacity:1;fill:#4774be;fill-opacity:1;stroke:none;"
        id="colorRectangle_b"
-       width="11.1111111111"
+       width="14.2857142857"
        height="100"
        x="0.0"
        y="0" />
     <rect
-       style="opacity:1;fill:#f4461f;fill-opacity:1;stroke:none;"
-       id="colorRectangle_r"
-       width="11.1111111111"
-       height="100"
-       x="11.1111111111"
-       y="0" />
-    <rect
-       style="opacity:1;fill:#4bb856;fill-opacity:1;stroke:none;"
+       style="opacity:1;fill:#57c48e;fill-opacity:1;stroke:none;"
        id="colorRectangle_g"
-       width="11.1111111111"
+       width="14.2857142857"
        height="100"
-       x="22.2222222222"
+       x="14.2857142857"
        y="0" />
     <rect
-       style="opacity:1;fill:#f49610;fill-opacity:1;stroke:none;"
+       style="opacity:1;fill:#f35e3c;fill-opacity:1;stroke:none;"
+       id="colorRectangle_r"
+       width="14.2857142857"
+       height="100"
+       x="28.5714285714"
+       y="0" />
+    <rect
+       style="opacity:1;fill:#ffb93a;fill-opacity:1;stroke:none;"
        id="colorRectangle_o"
-       width="11.1111111111"
+       width="14.2857142857"
        height="100"
-       x="33.3333333333"
+       x="42.8571428571"
        y="0" />
     <rect
-       style="opacity:1;fill:#f5f668;fill-opacity:1;stroke:none;"
+       style="opacity:1;fill:#eee98e;fill-opacity:1;stroke:none;"
        id="colorRectangle_y"
-       width="11.1111111111"
+       width="14.2857142857"
        height="100"
-       x="44.4444444444"
+       x="57.1428571429"
        y="0" />
     <rect
-       style="opacity:1;fill:#7f2385;fill-opacity:1;stroke:none;"
+       style="opacity:1;fill:#763877;fill-opacity:1;stroke:none;"
        id="colorRectangle_p"
-       width="11.1111111111"
+       width="14.2857142857"
        height="100"
-       x="55.5555555556"
-       y="0" />
-    <rect
-       style="opacity:1;fill:#91d87f;fill-opacity:1;stroke:none;"
-       id="colorRectangle_l"
-       width="11.1111111111"
-       height="100"
-       x="66.6666666667"
-       y="0" />
-    <rect
-       style="opacity:1;fill:#b3d8e9;fill-opacity:1;stroke:none;"
-       id="colorRectangle_a"
-       width="11.1111111111"
-       height="100"
-       x="77.7777777778"
+       x="71.4285714286"
        y="0" />
     <rect
        style="opacity:1;fill:#333333;fill-opacity:1;stroke:none;"
        id="colorRectangle_k"
-       width="11.1111111111"
+       width="14.2857142857"
        height="100"
-       x="88.8888888889"
+       x="85.7142857143"
        y="0" />
   </g>
 </svg>

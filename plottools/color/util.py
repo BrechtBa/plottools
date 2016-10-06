@@ -24,21 +24,17 @@ from colorspacious import cspace_converter
 from PIL import Image
 
 
-def plot_colors(ax,coldict,order=None):
-    n = len(coldict.keys())
-    
+def plot_colors(ax,colors,order=None):
+
     if order == None:
-        order = {}
-        for i,k in enumerate(coldict.keys()):
-            order[k] = i
+        order = colors.keys()
             
-    for k,c in coldict.items():
-        o = order[k]
-        ax.add_patch(  patches.Rectangle( (o, 0), 1.0, 5.0, facecolor=c, edgecolor='none') )
-        ax.text(o+0.5,2.5,k,ha='center')
+    for i,key in enumerate(order):
+        ax.add_patch(  patches.Rectangle( (i, 0), 1.0, 1.0, facecolor=colors[key], edgecolor='none') )
+        ax.text(i+0.5,0.5,key,ha='center')
         
-    plt.xlim([0,n])
-    plt.ylim([0,5])
+    plt.xlim([0,len(colors)])
+    plt.ylim([0,1])
 
 
 # derived from matplotlib viscm
@@ -71,100 +67,45 @@ def change_lightness_to_match_greyscale(col,grey):
 
     return newcol
   
-  
-  
-  
-def distribute_greyscale_spacing(colors_rgb,grey_min,grey_max,order=None,plot=False):
-    # convert all colors ro greyscale and determine the order
-    colors_grey_rgb = {}
-    grey = []
-    keys = []
-    for k,c in colors_rgb.items():
-        g = np.mean( to_greyscale(c) )
-        keys.append(k)
-        grey.append(g)
-        colors_grey_rgb[k] = (g,g,g)
-        
 
-    # define the order
-    if order == None:
-        order = {}
-        for i,o in enumerate(np.argsort(grey)):
-            order[keys[o]] = i
+def prepare_print_scan(colors):
+    
+    # order the colors according to lightness
+    keys = colors.keys()
+    J = [_sRGB1_to_JCh(colors[key])[0] for key in keys]
+    order = [k for (j,k) in sorted(zip(J,keys))]
+    
+    colors_grey = {}
 
-
-    # rescale to greyscale min-max
-    grey_edit = np.linspace(grey_min,grey_max,len(order.keys()))
-    colors_edit_rgb = {}
-    for k,c in colors_rgb.items():
-        colors_edit_rgb[k] = change_lightness_to_match_greyscale(c,grey_edit[order[k]])
-
-        
-    # convert all colors ro greyscale and determine the order
-    colors_edit_grey_rgb = {}
-    for k,c in colors_edit_rgb.items():
-        colors_edit_grey_rgb[k] = to_greyscale(c)  
-        
-
-    # print final colors
-    if plot:
-        for k,c in colors_edit_rgb.items():
-            print( '\'{}\': ({:>3.0f}./255, {:>3.0f}./255, {:>3.0f}./255),'.format(k,c[0]*255,c[1]*255,c[2]*255))
-           
-        fig = plt.figure()
-        ax1 = fig.add_subplot(221)
-        plot_colors(ax1,colors_rgb,order)
-        plt.title('original')
-        
-        ax2 = fig.add_subplot(223)
-        plot_colors(ax2,colors_grey_rgb,order)
-
-        ax3 = fig.add_subplot(222)
-        plot_colors(ax3,colors_edit_rgb,order)
-        plt.title('edited')
-        
-        ax4 = fig.add_subplot(224)
-        plot_colors(ax4,colors_edit_grey_rgb,order)  
-          
-      
-    return colors_edit_rgb
-
-
-def prepare_print_scan(colors_rgb,order=None):
-
-    colors_grey_rgb = {}
-
-    for k,c in colors_rgb.items():
-        colors_grey_rgb[k] = to_greyscale(c)
+    for key,val in colors.items():
+        colors_grey[key] = to_greyscale(val)
 
     fig = plt.figure(figsize=(16./2.54,24./2.54))
     ax1 = fig.add_subplot(211)
-    plot_colors(ax1,colors_rgb,order)
+    plot_colors(ax1,colors,order)
     plt.title('print color')
 
     ax2 = fig.add_subplot(212)
-    plot_colors(ax2,colors_grey_rgb,order)  
+    plot_colors(ax2,colors_grey,order)  
     plt.title('print greyscale')
 
 
-def analyse_print_scan(scanfile,colors_rgb,order=None):
+def analyse_print_scan(scanfile,colors):
 
     im = Image.open(scanfile).convert('RGB')
 
-    if order == None:
-        order = {}
-        for i,k in enumerate(coldict.keys()):
-            order[k] = i
-
-    
+    # order the colors according to lightness
+    keys = colors.keys()
+    J = [_sRGB1_to_JCh(colors[key])[0] for key in keys]
+    order = [k for (j,k) in sorted(zip(J,keys))]
 
     width,height = im.size
 
-    rgb_color = {}
-    rgb_greyscale = {}
-    for key in colors_rgb:
+    scan_colors = {}
+    scan_colors_grey = {}
+    for i,key in enumerate(order):
         # get the colors from the scan file
-        x = int(0.20*width + 0.66*order[key]/len(order)*width)
+        x = int(0.20*width + 0.66*i/len(order)*width)
 
         y = int(0.25*height)
         r = [ im.getpixel( (xi, yi) )[0] for xi in np.array(x)+np.arange(-int(0.02*width),int(0.02*width)) for yi in np.array(y)+np.arange(-int(0.02*height),int(0.02*height)) ]
@@ -172,52 +113,54 @@ def analyse_print_scan(scanfile,colors_rgb,order=None):
         b = [ im.getpixel( (xi, yi) )[2] for xi in np.array(x)+np.arange(-int(0.02*width),int(0.02*width)) for yi in np.array(y)+np.arange(-int(0.02*height),int(0.02*height)) ]
         
 
-        rgb_color[key] = (np.mean(r)/255,np.mean(g)/255,np.mean(b)/255)
+        scan_colors[key] = (np.mean(r)/255,np.mean(g)/255,np.mean(b)/255)
 
         y = int(0.80*height)
         r = [ im.getpixel( (xi, yi) )[0] for xi in np.array(x)+np.arange(-int(0.02*width),int(0.02*width)) for yi in np.array(y)+np.arange(-int(0.02*height),int(0.02*height)) ]
         g = [ im.getpixel( (xi, yi) )[1] for xi in np.array(x)+np.arange(-int(0.02*width),int(0.02*width)) for yi in np.array(y)+np.arange(-int(0.02*height),int(0.02*height)) ]
         b = [ im.getpixel( (xi, yi) )[2] for xi in np.array(x)+np.arange(-int(0.02*width),int(0.02*width)) for yi in np.array(y)+np.arange(-int(0.02*height),int(0.02*height)) ]
         
-        rgb_greyscale[key] = (np.mean(r)/255,np.mean(g)/255,np.mean(b)/255)
+        scan_colors_grey[key] = (np.mean(r)/255,np.mean(g)/255,np.mean(b)/255)
 
 
     fig = plt.figure(figsize=(16./2.54,24./2.54))
     ax1 = fig.add_subplot(211)
-    plot_colors(ax1,rgb_color,order)
+    plot_colors(ax1,scan_colors,order)
     plt.title('scan color')
 
     ax2 = fig.add_subplot(212)
-    plot_colors(ax2,rgb_greyscale,order)  
+    plot_colors(ax2,scan_colors_grey,order)  
     plt.title('scan greyscale')
     
     
     # compare the printed values with to_greyscale
     greyscales = {}
-    for key,val in colors_rgb.items():
+    for key,val in colors.items():
         greyscales[key] = np.mean(to_greyscale(val))
 
-    greyscales_printed = {}
-    for key,val in rgb_color.items():
-        greyscales_printed[key] = np.mean(val)
+    scan_greyscales= {}
+    for key,val in scan_colors.items():
+        scan_greyscales[key] = np.mean(val)
 
 
     # rescale so first and last value are equal
-    x  = np.array([order[key] for key in colors_rgb.keys()])
-    y1 = np.array([greyscales[key] for key in colors_rgb.keys()])
-    y2 = np.array([greyscales_printed[key] for key in colors_rgb.keys()])
+    x  = np.arange(len(order))
+    y1 = np.array([greyscales[key] for key in order])
+    y2 = np.array([scan_greyscales[key] for key in order])
     # rescale so first and last value are equal
     y2 = min(y1) + (y2-min(y2))*(max(y1)-min(y1))/(max(y2)-min(y2))
 
     plt.figure()
+    plt.plot([x[0],x[-1]],[y1[0],y1[-1]],'k--')
+    
     plt.plot(x,y1,'o',color='b',label='greyscale')
     plt.plot(x,y2,'s',color='r',label='printed')
 
-    for key in colors_rgb.keys():
-        plt.text(order[key]+0.12,greyscales[key],key)
+    for xi,yi,key in zip(x,y1,order):
+        plt.text(xi,yi-0.10,key)
 
-    plt.legend(loc='lower right')
-    plt.xlim([-0.5,len(colors_rgb)-1+0.5])
+    plt.legend(loc='lower right',numpoints=1)
+    plt.xlim([-0.5,len(order)-1+0.5])
     plt.ylim([-0.02,1.02])
     
     

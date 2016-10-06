@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100"
+   height="100"
+   id="colorsSvg"
+   version="1.1"
+   inkscape:version="0.91 r13725">
+  <defs
+     id="defs4" />
+  <g
+     id="layer1"
+     style="display:inline">
+    <rect
+       style="opacity:1;fill:#8fbcff;fill-opacity:1;stroke:none;"
+       id="colorRectangle_b"
+       width="14.2857142857"
+       height="100"
+       x="0.0"
+       y="0" />
+    <rect
+       style="opacity:1;fill:#9bffcc;fill-opacity:1;stroke:none;"
+       id="colorRectangle_g"
+       width="14.2857142857"
+       height="100"
+       x="14.2857142857"
+       y="0" />
+    <rect
+       style="opacity:1;fill:#ff9d74;fill-opacity:1;stroke:none;"
+       id="colorRectangle_r"
+       width="14.2857142857"
+       height="100"
+       x="28.5714285714"
+       y="0" />
+    <rect
+       style="opacity:1;fill:#ffee69;fill-opacity:1;stroke:none;"
+       id="colorRectangle_o"
+       width="14.2857142857"
+       height="100"
+       x="42.8571428571"
+       y="0" />
+    <rect
+       style="opacity:1;fill:#ffffa5;fill-opacity:1;stroke:none;"
+       id="colorRectangle_y"
+       width="14.2857142857"
+       height="100"
+       x="57.1428571429"
+       y="0" />
+    <rect
+       style="opacity:1;fill:#c983c7;fill-opacity:1;stroke:none;"
+       id="colorRectangle_p"
+       width="14.2857142857"
+       height="100"
+       x="71.4285714286"
+       y="0" />
+    <rect
+       style="opacity:1;fill:#868584;fill-opacity:1;stroke:none;"
+       id="colorRectangle_k"
+       width="14.2857142857"
+       height="100"
+       x="85.7142857143"
+       y="0" />
+  </g>
+</svg>

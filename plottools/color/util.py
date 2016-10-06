@@ -109,7 +109,7 @@ def distribute_greyscale_spacing(colors_rgb,grey_min,grey_max,order=None,plot=Fa
     # print final colors
     if plot:
         for k,c in colors_edit_rgb.items():
-            print( '\'{}\': ({:>3.0f}./255,{:>3.0f}./255,{:>3.0f}./255),'.format(k,c[0]*255,c[1]*255,c[2]*255))
+            print( '\'{}\': ({:>3.0f}./255, {:>3.0f}./255, {:>3.0f}./255),'.format(k,c[0]*255,c[1]*255,c[2]*255))
            
         fig = plt.figure()
         ax1 = fig.add_subplot(221)
@@ -219,8 +219,8 @@ def analyse_print_scan(scanfile,colors_rgb,order=None):
     plt.legend(loc='lower right')
     plt.xlim([-0.5,len(colors_rgb)-1+0.5])
     plt.ylim([-0.02,1.02])
-
-
+    
+    
 if __name__ == '__main__':
 
     colors_rgb = {

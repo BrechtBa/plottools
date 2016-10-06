@@ -19,11 +19,10 @@
 
 from .colorscheme import *
 from .util import *
-from .default import *
+from . import default
 
 ################################################################################
 # create default color schemes
 ################################################################################
-default = Colorscheme(basecolors,longnames=longnames,cycle=basecycle)
-defaultlight = Colorscheme(lightcolors,longnames=longnames,cycle=basecycle)
+default = Colorscheme(default.colors,longnames=default.longnames,cycle=default.cycle)
 

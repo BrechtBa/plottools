@@ -19,9 +19,11 @@
 
 import sys
 import os
+import numpy as np
 import matplotlib.pyplot as plt
 from cycler import cycler
 
+import util
 
 ################################################################################
 # Colorscheme class 
@@ -32,7 +34,7 @@ class Colorscheme(object):
    
     """
     
-    def __init__(self,colors,longnames=None,cycle=None):
+    def __init__(self,colors,longnames=None,cycle=None,base=None):
         """
         defines a colorscheme object useful for plotting
         
@@ -71,7 +73,25 @@ class Colorscheme(object):
         self.longnames = longnames
         self.cycle = cycle
         self.currentindex = 0
-
+        self.base = base
+        
+        # create light and dark variants
+        if base==None:
+            lightcolors = {}
+            darkcolors = {}
+            for key,val in colors.items():
+                JCh = util._sRGB1_to_JCh(val)
+                JCh[0] = min(JCh[0]+30,100)
+                lightcolors[key] = np.clip(util._JCh_to_sRGB1(JCh),0,1)
+                
+                JCh = util._sRGB1_to_JCh(val)
+                JCh[0] = max(JCh[0]-20,1e-6)
+                darkcolors[key] = np.clip(util._JCh_to_sRGB1(JCh),0,1)
+                
+            self.light = Colorscheme(lightcolors,longnames=longnames,cycle=cycle,base=self)
+            self.dark = Colorscheme(darkcolors,longnames=longnames,cycle=cycle,base=self)
+            
+        
     def next(self):
         """
         get the next color in the cycle
@@ -96,7 +116,7 @@ class Colorscheme(object):
         """
         
         plt.rc('axes',prop_cycle=cycler('color', [self.colors[c] for c in self.cycle]) )
-        
+    
     def __getitem__(self,key):
         if isinstance(key,int):
             self.currentindex = key+1
@@ -108,6 +128,14 @@ class Colorscheme(object):
             self.currentindex = self.cycle.index(key)+1
             return self.colors[key]
 
+    def keys(self):
+        return self.colors.keys()
+        
+    def values(self):
+        return [self.colors[key] for key in self.keys()]
+
+    def items(self):
+        return zip(self.keys(),self.values())
     
     def to_svg(self,filename):
         """

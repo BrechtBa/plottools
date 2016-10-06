@@ -17,28 +17,43 @@ for i in range(n):
 plt.legend()
 
 
-# some lines
+# lines light and dark
 plt.figure()
 x = np.linspace(0,2*np.pi,100)
-plt.plot(x,np.sin(x- 0*2*np.pi/12),color=pt.color.default['k'],label='k')
+for i,key in enumerate( pt.color.default.keys() ):
+    plt.plot(x,np.sin(x- i*2*2*np.pi/12),color=pt.color.default[key],label=key)
+    plt.plot(x,np.sin(x- i*2*2*np.pi/12)-0.1,color=pt.color.default.light[key])
+    plt.plot(x,np.sin(x- i*2*2*np.pi/12)+0.1,color=pt.color.default.dark[key])
+"""    
 plt.plot(x,np.sin(x- 2*2*np.pi/12),color=pt.color.default['b'],label='b')
 plt.plot(x,np.sin(x- 4*2*np.pi/12),color=pt.color.default['r'],label='r')
 plt.plot(x,np.sin(x- 6*2*np.pi/12),color=pt.color.default['y'],label='y')
 plt.plot(x,np.sin(x- 8*2*np.pi/12),color=pt.color.default['o'],label='o')
 plt.plot(x,np.sin(x-10*2*np.pi/12),color=pt.color.default['g'],label='g')
+plt.plot(x,np.sin(x-12*2*np.pi/12),color=pt.color.default['p'],label='p')
 
-plt.plot(x,np.sin(x- 0*2*np.pi/12)-0.1,color=pt.color.defaultlight['k'],label='kl')
-plt.plot(x,np.sin(x- 2*2*np.pi/12)-0.1,color=pt.color.defaultlight['b'],label='bl')
-plt.plot(x,np.sin(x- 4*2*np.pi/12)-0.1,color=pt.color.defaultlight['r'],label='rl')
-plt.plot(x,np.sin(x- 6*2*np.pi/12)-0.1,color=pt.color.defaultlight['y'],label='yl')
-plt.plot(x,np.sin(x- 8*2*np.pi/12)-0.1,color=pt.color.defaultlight['o'],label='ol')
-plt.plot(x,np.sin(x-10*2*np.pi/12)-0.1,color=pt.color.defaultlight['g'],label='gl')
+plt.plot(x,np.sin(x- 0*2*np.pi/12)-0.1,color=pt.color.default.light['k'])
+plt.plot(x,np.sin(x- 2*2*np.pi/12)-0.1,color=pt.color.default.light['b'])
+plt.plot(x,np.sin(x- 4*2*np.pi/12)-0.1,color=pt.color.default.light['r'])
+plt.plot(x,np.sin(x- 6*2*np.pi/12)-0.1,color=pt.color.default.light['y'])
+plt.plot(x,np.sin(x- 8*2*np.pi/12)-0.1,color=pt.color.default.light['o'])
+plt.plot(x,np.sin(x-10*2*np.pi/12)-0.1,color=pt.color.default.light['g'])
+plt.plot(x,np.sin(x-12*2*np.pi/12)-0.1,color=pt.color.default['p'],label='p')
+
+plt.plot(x,np.sin(x- 0*2*np.pi/12)+0.1,color=pt.color.default.dark['k'])
+plt.plot(x,np.sin(x- 2*2*np.pi/12)+0.1,color=pt.color.default.dark['b'])
+plt.plot(x,np.sin(x- 4*2*np.pi/12)+0.1,color=pt.color.default.dark['r'])
+plt.plot(x,np.sin(x- 6*2*np.pi/12)+0.1,color=pt.color.default.dark['y'])
+plt.plot(x,np.sin(x- 8*2*np.pi/12)+0.1,color=pt.color.default.dark['o'])
+plt.plot(x,np.sin(x-10*2*np.pi/12)+0.1,color=pt.color.default.dark['g'])
+plt.plot(x,np.sin(x-12*2*np.pi/12)+0.1,color=pt.color.default['p'],label='p')
+"""
 plt.legend()
 
 
 
 # bar plot
-pt.color.defaultlight.reset_index()
+pt.color.default.reset_index()
 plt.figure()
 x = np.arange(6)
 cat = ['cat{}'.format(i+1) for i in range(n)]

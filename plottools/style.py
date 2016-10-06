@@ -90,7 +90,7 @@ def noxticks(axes=None):
     """
     if axes == None:
         axes = plt.gca()
-        
+
     axes.xaxis.set_tick_params(which='both', bottom='off', top='off', left='off', right='off', labelbottom='on', labelleft='on')
     
     
@@ -130,8 +130,8 @@ def set(style,axes=None):
         if s in ['horizontalgrid','horizontalgridwithoutticks']:
             horizontalgrid(axes)
         
-        if s == ['noxticks','horizontalgridwithoutticks']:
-            noticks(axes)
+        if s in ['noxticks','horizontalgridwithoutticks']:
+            noxticks(axes)
             
          
          

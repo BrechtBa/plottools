@@ -24,30 +24,6 @@ for i,key in enumerate( pt.color.default.keys() ):
     plt.plot(x,np.sin(x- i*2*2*np.pi/12),color=pt.color.default[key],label=key)
     plt.plot(x,np.sin(x- i*2*2*np.pi/12)-0.1,color=pt.color.default.light[key])
     plt.plot(x,np.sin(x- i*2*2*np.pi/12)+0.1,color=pt.color.default.dark[key])
-"""    
-plt.plot(x,np.sin(x- 2*2*np.pi/12),color=pt.color.default['b'],label='b')
-plt.plot(x,np.sin(x- 4*2*np.pi/12),color=pt.color.default['r'],label='r')
-plt.plot(x,np.sin(x- 6*2*np.pi/12),color=pt.color.default['y'],label='y')
-plt.plot(x,np.sin(x- 8*2*np.pi/12),color=pt.color.default['o'],label='o')
-plt.plot(x,np.sin(x-10*2*np.pi/12),color=pt.color.default['g'],label='g')
-plt.plot(x,np.sin(x-12*2*np.pi/12),color=pt.color.default['p'],label='p')
-
-plt.plot(x,np.sin(x- 0*2*np.pi/12)-0.1,color=pt.color.default.light['k'])
-plt.plot(x,np.sin(x- 2*2*np.pi/12)-0.1,color=pt.color.default.light['b'])
-plt.plot(x,np.sin(x- 4*2*np.pi/12)-0.1,color=pt.color.default.light['r'])
-plt.plot(x,np.sin(x- 6*2*np.pi/12)-0.1,color=pt.color.default.light['y'])
-plt.plot(x,np.sin(x- 8*2*np.pi/12)-0.1,color=pt.color.default.light['o'])
-plt.plot(x,np.sin(x-10*2*np.pi/12)-0.1,color=pt.color.default.light['g'])
-plt.plot(x,np.sin(x-12*2*np.pi/12)-0.1,color=pt.color.default['p'],label='p')
-
-plt.plot(x,np.sin(x- 0*2*np.pi/12)+0.1,color=pt.color.default.dark['k'])
-plt.plot(x,np.sin(x- 2*2*np.pi/12)+0.1,color=pt.color.default.dark['b'])
-plt.plot(x,np.sin(x- 4*2*np.pi/12)+0.1,color=pt.color.default.dark['r'])
-plt.plot(x,np.sin(x- 6*2*np.pi/12)+0.1,color=pt.color.default.dark['y'])
-plt.plot(x,np.sin(x- 8*2*np.pi/12)+0.1,color=pt.color.default.dark['o'])
-plt.plot(x,np.sin(x-10*2*np.pi/12)+0.1,color=pt.color.default.dark['g'])
-plt.plot(x,np.sin(x-12*2*np.pi/12)+0.1,color=pt.color.default['p'],label='p')
-"""
 plt.legend()
 
 

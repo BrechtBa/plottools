@@ -182,4 +182,4 @@ class ColorschemeBuilder(object):
     
 if __name__ == '__main__':
     
-    csb = ColorschemeBuilder(default.basecolors,['k','p','b','r','g','o','y'])
+    csb = ColorschemeBuilder(default.colors,['k','p','b','r','g','o','y'])

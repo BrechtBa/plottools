@@ -27,7 +27,7 @@ from matplotlib.widgets import Button, Slider
 from cycler import cycler
 
 import util
-import default
+from .. import cm
 
 ################################################################################
 # Colorscheme class 
@@ -140,7 +140,16 @@ class Colorscheme(object):
 
     def items(self):
         return zip(self.keys(),self.values())
-    
+        
+    def plot(self,ax=None):
+        """
+        plots the current colorscheme main colors
+        """
+        if ax == None:
+            fig,ax = plt.subplots()
+        
+        util.plot_colors(ax,self.colors,order=self.cycle)
+        
     def to_svg(self,filename):
         """
         converts the colorscheme to an svg file with block of colors ordered
@@ -191,13 +200,14 @@ class Colorscheme(object):
         
         
         
-class ColorschemeBuilder(object):
-    def __init__(self,colors,order=None):
-    
-        if order == None:
-            order = colors.keys()
+class ColorschemeTool(object):
+    """
+    """
+    def __init__(self,colors):
+        """
+        """
             
-        self.order = order
+        self.order = util.order_by_J(colors)
         self.RGB = colors
         self.grey = self._to_greyscale(colors)
         self.exampledata = self._generate_exampledata(self.order)
@@ -262,7 +272,7 @@ class ColorschemeBuilder(object):
             
             # h
             ah = plt.axes([0.05, y+i*h/len(self.order)-0.02, x-0.15, 0.05])
-            ah.imshow( np.linspace(0, 100, 101).reshape(1, -1), cmap='gray' )
+            ah.imshow( np.linspace(0, 100, 101).reshape(1, -1), cmap=cm.hue )
             sh = Slider(ah, r'h', 0, 100, valinit=JCh[2]/360.*100.)
             sh.on_changed(self._slider_update)
             
@@ -357,14 +367,9 @@ class ColorschemeBuilder(object):
             hp = self.slider_h[key].val*360./100.
 
             self.RGB[key] = np.clip(util._JCh_to_sRGB1([jp,cp,hp]),0,1)
-            
+        
         self.grey = self._to_greyscale(self.RGB)
 
         self.plot_colors()
         self.plot_distribution()
         self.plot_example()
-    
-    
-if __name__ == '__main__':
-    
-    csb = ColorschemeBuilder(default.colors,['k','p','b','r','g','o','y'])

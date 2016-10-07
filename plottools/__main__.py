@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env/ python
+#!/usr/bin/env/ python
 ################################################################################
 #    Copyright 2016 Brecht Baeten
 #    This file is part of plottools.
@@ -17,26 +17,16 @@
 #    along with plottools.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
+import sys
+import color.colorscheme
+import color.default
+import matplotlib.pyplot as plt
 
-# colors that look nice and have considerable contrast in greyscale
-colors = {
-    'b': ( 71./255, 116./255, 190./255),
-    'g': (110./255, 197./255, 128./255),
-    'k': ( 51./255,  51./255,  51./255),
-    'o': (255./255, 185./255,  59./255),
-    'p': (118./255,  56./255, 119./255),
-    'r': (242./255,  92./255,  61./255),
-    'y': (248./255, 232./255,  73./255),
-}
-
-longnames = {
-    'black': 'k',
-    'purple': 'p',
-    'blue': 'b',
-    'green': 'g',
-    'red': 'r',
-    'orange': 'o',
-    'yellow': 'y'
-}
-
-cycle = ['b','g','r','o','y','p','k']
+if 'cst' in sys.argv:
+    print('Starting Color Scheme Tool')
+    cst = color.colorscheme.ColorschemeTool(color.default.colors)
+    
+if 'cs' in sys.argv:
+    print('Plotting the default Color Scheme')
+    color.default.plot()
+    plt.show()

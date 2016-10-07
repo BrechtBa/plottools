@@ -28,7 +28,9 @@ def plot_colors(ax,colors,order=None):
 
     if order == None:
         order = colors.keys()
-            
+    elif order == 'J':
+        order = order_by_J(colors)
+        
     for i,key in enumerate(order):
         ax.add_patch(  patches.Rectangle( (i, 0), 1.0, 1.0, facecolor=colors[key], edgecolor='none') )
         ax.text(i+0.5,0.5,key,ha='center')
@@ -66,14 +68,17 @@ def change_lightness_to_match_greyscale(col,grey):
     newcol = np.clip(newcol,0,1)
 
     return newcol
-  
 
-def prepare_print_scan(colors):
-    
-    # order the colors according to lightness
+def order_by_J(colors):
     keys = colors.keys()
     J = [_sRGB1_to_JCh(colors[key])[0] for key in keys]
     order = [k for (j,k) in sorted(zip(J,keys))]
+    
+    return order
+    
+def prepare_print_scan(colors):
+    
+    order = order_by_J(colors)
     
     colors_grey = {}
 

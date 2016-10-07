@@ -203,9 +203,14 @@ class Colorscheme(object):
 class ColorschemeTool(object):
     """
     """
-    def __init__(self,colors):
+    def __init__(self,colorscheme):
         """
         """
+            
+        if colorscheme.__class__ == Colorscheme:
+            colors = colorscheme.colors
+        else:
+            colors = colorscheme
             
         self.order = util.order_by_J(colors)
         self.RGB = colors

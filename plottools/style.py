@@ -94,7 +94,7 @@ def noxticks(axes=None):
     axes.xaxis.set_tick_params(which='both', bottom='off', top='off', left='off', right='off', labelbottom='on', labelleft='on')
     
     
-def set(style,axes=None):
+def set(*style,**kwargs):
     """
     Sets styles of a single axes object
     
@@ -120,11 +120,13 @@ def set(style,axes=None):
     
     """
     
-    if axes == None:
+    if not 'axes' in kwargs:
         axes = plt.gca()
+    else:
+        axes = kwargs['axes']
         
-    if isinstance(style, basestring):
-        style = [style]
+    #if isinstance(style, basestring):
+    #    style = [style]
         
     for s in style:
         if s in ['horizontalgrid','horizontalgridwithoutticks']:

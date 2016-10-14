@@ -491,7 +491,11 @@ def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,siz
                 if not xticklabel_old==None:
                     # add the tick label
                     xtick_avg = 0.5*(xtick_old - 0.5*dxticks[j]) + 0.5*(xticks[j] - 0.5*dxticks[j])
-                    plt.annotate(fmt[i].format(xticklabel_old),xy=(xtick_avg, ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',ha="center", va="bottom", size=size[i], rotation=rotation[i])
+                    try:
+                        lab = fmt[i].format(xticklabel_old)
+                    except:
+                        lab = xticklabel_old
+                    plt.annotate(lab,xy=(xtick_avg, ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',ha="center", va="bottom", size=size[i], rotation=rotation[i])
                 
                 xtick_old = xticks[j]
                 xticklabel_old = xtl
@@ -499,12 +503,20 @@ def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,siz
         # add the final tick label
         j = len(c)-1
         xtick_avg = 0.5*(xtick_old - 0.5*dxticks[j]) + 0.5*(xticks[j] + 0.5*dxticks[j])
-        plt.annotate(fmt[i].format(xticklabel_old),xy=(xtick_avg, ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',ha="center", va="bottom", size=size[i], rotation=rotation[i])
+        try:
+            lab = fmt[i].format(xticklabel_old)
+        except:
+            lab = xticklabel_old
+        plt.annotate(lab,xy=(xtick_avg, ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',ha="center", va="bottom", size=size[i], rotation=rotation[i])
            
     # add the deepest ticklabel
     i = 0
     for j,xtl in enumerate(xticklabels[i]):
-        plt.annotate(fmt[i].format(xtl),xy=(xticks[j], ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',ha="center", va="bottom", size=size[i], rotation=rotation[i])
+        try:
+            lab = fmt[i].format(xtl)
+        except:
+            lab = xtl
+        plt.annotate(lab,xy=(xticks[j], ylim[0]), xycoords='data',xytext=(0, yp[i]), textcoords='offset points',ha="center", va="bottom", size=size[i], rotation=rotation[i])
         
     # add the final separator line
     i = len(xticklabels)-1

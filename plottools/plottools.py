@@ -529,3 +529,18 @@ def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,siz
     for i,l in enumerate(xticklabelnames):
         plt.annotate(l,xy=(xlim[0], ylim[0]), xycoords='data',xytext=(-xp, yp[i]+0.1*size[i]), textcoords='offset points',ha="right", va="bottom", size=size[i])
 
+
+        
+def marker(i):
+    """
+    Default cycle of markers
+    
+    Parameters
+    ----------
+    i : int
+        an index when the supplied index is too big, the markers are cycled
+        
+    """
+    
+    values = ['^','s','<','o','>','*','v','1']
+    return values[np.mod(i,len(values))]

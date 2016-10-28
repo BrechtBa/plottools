@@ -19,6 +19,14 @@
 
 from .__version__ import version as __version__
 from .plottools import *
-import color
+import cs
 import cm
 import style
+
+
+################################################################################
+# create default color schemes
+################################################################################
+color = cs.Colorscheme(cs.default.colors,longnames=cs.default.longnames,cycle=cs.default.cycle)
+
+

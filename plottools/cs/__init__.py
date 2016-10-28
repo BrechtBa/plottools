@@ -20,9 +20,3 @@
 from .colorscheme import *
 from .util import *
 from . import default
-
-################################################################################
-# create default color schemes
-################################################################################
-default = Colorscheme(default.colors,longnames=default.longnames,cycle=default.cycle)
-

@@ -529,6 +529,58 @@ def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,siz
     for i,l in enumerate(xticklabelnames):
         plt.annotate(l,xy=(xlim[0], ylim[0]), xycoords='data',xytext=(-xp, yp[i]+0.1*size[i]), textcoords='offset points',ha="right", va="bottom", size=size[i])
 
+        
+        
+def cmapval(v,vmin=0,vmax=1,cmap=None):
+    """
+    Extracts the color belonging to a value or list of values from a colormap
+    
+    Parameters
+    ----------
+    v : float, list, tuple
+        the value or values for which to return the colors
+        
+    vmin : float
+        the value corresponding to the first color in the colormap
+        
+    vmax : float
+        the value corresponding to the last color in the colormap
+        
+    cmap : colormap
+        a matplotlib colormap   
+    
+    Returns
+    -------
+    hexcolor : string or list of strings
+        a html representation of the colors correspoinding to the values
+        
+    Examples
+    --------
+    >>> import matplotlib.pyplot as plt
+    >>> v = cmapval(0.6)
+    '#22a784'
+    
+    >>> v = cmapval([1000,2000,3000],vmin=100,vmax=3150,cmap=plt.cm.plasma)
+    ['#8f0da3', '#e46a5d', '#f7e024']
+    
+    """
+    
+    if cmap is None:
+        cmap = plt.cm.viridis
+        
+    extractvalue = False
+    if not isinstance(v,(list,tuple)):
+        v = [v]
+        extractvalue = True
+        
+    color = cmap( np.interp(v,[vmin,vmax],[0.01,0.99]) )
+    hexcolor = map(lambda rgb:'#%02x%02x%02x' % (rgb[0]*255,rgb[1]*255,rgb[2]*255),tuple(color[:,0:-1])) 
+    
+    if extractvalue:
+        hexcolor = hexcolor[0]
+        
+    return hexcolor
+
 
         
 def marker(i):

@@ -22,7 +22,7 @@ rotation = [70,0,0]
 plt.figure()
 bottom = np.zeros_like(values[0])
 for val,lab in zip(values,labels):
-    plt.bar(xticks+0.05,val,0.9,bottom=bottom,label=lab,color=pt.color.default.next())
+    plt.bar(xticks+0.05,val,0.9,bottom=bottom,label=lab,color=pt.color.next())
     bottom += val
     
 plt.legend(framealpha=0.7,loc='upper right')

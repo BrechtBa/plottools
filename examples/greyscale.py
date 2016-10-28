@@ -3,18 +3,18 @@ import matplotlib.patches as patches
 import numpy as np
 
 import plottools as pt
-from plottools.color.util import to_greyscale
+from plottools.cs.util import to_greyscale
 
 # get the greyscale values of all colors
-n = len(pt.color.default.cycle)
+n = len(pt.color.cycle)
 
 colors = []
 names = []
 greyscales = []
 for i in range(n):
-    names.append( pt.color.default.cycle[i] )
-    colors.append( pt.color.default[i] )
-    greyscales.append(  np.mean(to_greyscale(pt.color.default[i])) )
+    names.append( pt.color.cycle[i] )
+    colors.append( pt.color[i] )
+    greyscales.append(  np.mean(to_greyscale(pt.color[i])) )
     
 colors = np.array(colors)
 names = np.array(names)
@@ -45,7 +45,7 @@ plt.ylim([0,n])
 
 # plot the greyscale values in order
 plt.figure()
-plt.plot(np.arange(n),greyscales[index],'o',color=pt.color.default['k'])
+plt.plot(np.arange(n),greyscales[index],'o',color=pt.color['k'])
 for i,ind in enumerate(index):
     plt.text(i+0.12,greyscales[ind],names[ind])
 

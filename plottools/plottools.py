@@ -79,6 +79,40 @@ def set_publication_rc():
     plt.rc('ytick.minor', size=1, width=0.3, pad=3)
     
     
+def savefig(filename,width=None,height=None,ratio=8./5.,**kwargs):
+    """
+    Creates a new figure with a specified width and 8:5, width:height ratio
+    
+    If no width or height are specified a 8cm x 5cm figure is saved. If the
+    width and height are specified, a figure of that size is saved.
+    If one of width or height is specified, the ratio is used to define the 
+    other.
+    
+    Parameters
+    ----------
+    width : number
+        figure width in cm
+        
+    height : number
+        figure height in cm
+        
+    ratio : number
+        figure height in cm
+        
+    """
+    
+    if width is None and height is None:
+        width = 8.
+        height = width/ratio
+    elif not width is None and height is None:
+        height = width/ratio
+    elif not height is None and width is None:
+        width = height*ratio
+        
+        
+    plt.gcf().set_size_inches(width/2.54,height/2.54)
+    plt.savefig(filename,**kwargs)
+    
     
 def set_style(style,axes=None):
     """

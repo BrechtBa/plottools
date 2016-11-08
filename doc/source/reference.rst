@@ -4,5 +4,6 @@ Reference
     :maxdepth: 3
 
     plottools
-    color
     style
+    cs
+    cm

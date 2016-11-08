@@ -5,8 +5,6 @@ plottools
     
 .. currentmodule:: plottools
 
-Plot functions
---------------
 
 .. autosummary::
     :nosignatures:
@@ -14,14 +12,6 @@ Plot functions
     
     categorized_xticklabels
     zoom_axes
-    
-    
-Style functions
----------------
-
-.. autosummary::
-    :nosignatures:
-    :toctree: generated
-    
     set_publication_rc
+
     

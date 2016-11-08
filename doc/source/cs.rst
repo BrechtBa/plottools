@@ -1,25 +1,25 @@
-color
-=====
+cs
+==
 .. toctree::
     :maxdepth: 3
     
 colorscheme
 -----------
 
-.. currentmodule:: plottools.color.colorscheme
+.. currentmodule:: plottools.cs.colorscheme
 
 .. autosummary::
     :nosignatures:
     :toctree: generated
     
         Colorscheme
-        ColorschemeBuilder
+        ColorschemeTool
         
         
 util
 ----
 
-.. currentmodule:: plottools.color.util
+.. currentmodule:: plottools.cs.util
 
 .. autosummary::
     :nosignatures:

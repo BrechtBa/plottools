@@ -265,7 +265,7 @@ cm_data = [[ 0.08766493, 0.20496868, 0.5005953 ],
            [ 0.89594311, 0.06741927, 0.05408478],
            [ 0.8985074 , 0.06502592, 0.04455319]]
 
-coldhot = ListedColormap(cm_data, name=__file__)
+test_cm = ListedColormap(cm_data, name=__file__)
 
 
 if __name__ == "__main__":
@@ -274,9 +274,9 @@ if __name__ == "__main__":
 
     try:
         from viscm import viscm
-        viscm(coldhot)
+        viscm(test_cm)
     except ImportError:
         print("viscm not found, falling back on simple display")
         plt.imshow(np.linspace(0, 100, 256)[None, :], aspect='auto',
-                   cmap=coldhot)
+                   cmap=test_cm)
     plt.show()

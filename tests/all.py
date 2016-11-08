@@ -17,16 +17,9 @@
 #    along with plottools.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
-from .__version__ import version as __version__
-from .plottools import *
-import cs
-import cm
-import style
+import unittest
 
+from test_plottools import *
 
-################################################################################
-# create default color schemes
-################################################################################
-color = cs.Colorscheme(cs.default.colors,longnames=cs.default.longnames,cycle=cs.default.cycle)
-
-
+if __name__ == '__main__':
+    unittest.main()

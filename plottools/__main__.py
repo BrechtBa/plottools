@@ -17,16 +17,16 @@
 #    along with plottools.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
-from .__version__ import version as __version__
-from .plottools import *
-import cs
-import cm
-import style
+import sys
+import color.colorscheme
+import color.default
+import matplotlib.pyplot as plt
 
-
-################################################################################
-# create default color schemes
-################################################################################
-color = cs.Colorscheme(cs.default.colors,longnames=cs.default.longnames,cycle=cs.default.cycle)
-
-
+if 'cst' in sys.argv:
+    print('Starting Color Scheme Tool')
+    cst = color.colorscheme.ColorschemeTool(color.default.colors)
+    
+if 'cs' in sys.argv:
+    print('Plotting the default Color Scheme')
+    color.default.plot()
+    plt.show()

@@ -13,4 +13,4 @@ Installation
     
 Documentation
 -------------
-Some documentation is available on `pythonhosted<http://pythonhosted.org/plottools/>`_.
+Some documentation is available on `pythonhosted <http://pythonhosted.org/plottools/>`_.

@@ -628,5 +628,5 @@ def marker(i):
         
     """
     
-    values = ['^','s','<','o','>','*','v','1']
+    values = ['^','s','v','o','>','*','<','1']
     return values[np.mod(i,len(values))]

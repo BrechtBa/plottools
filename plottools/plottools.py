@@ -564,6 +564,95 @@ def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,siz
         plt.annotate(l,xy=(xlim[0], ylim[0]), xycoords='data',xytext=(-xp, yp[i]+0.1*size[i]), textcoords='offset points',ha="right", va="bottom", size=size[i])
 
         
+def linelabel(x,y,label,x0=None,y0=None,color='k',ha=None,va=None):
+    """
+    Adds a label to a line in the direction of the line similar to a contour
+    label
+    
+    Parameters
+    ----------
+    x : np.array
+        x data of the line
+    
+    y : np.array
+        x data of the line    
+    
+    label: str
+        the label
+        
+    x0: number  
+        text x coordinate
+    
+    y0: number
+        text y coordinate
+        
+    color: 
+        text color
+        
+    ha: str  
+        horizontal alignment
+    
+    va: str
+        vertical alignment
+    
+    Examples
+    --------
+    .. plot::
+    
+        >>> import matplotlib.pyplot as plt
+        >>> import numpy as np
+        >>> import plottools
+        >>> 
+        >>> plottools.set_publication_rc()
+        >>> 
+        >>> # generate data
+        >>> x = np.linspace(0,1,20)
+        >>> y = np.cumsum(np.random.random(len(x))-0.5)
+        >>> 
+        >>> plt.plot(x,y)
+        >>> # add the line label
+        >>> plt.linelabel(x,y,'somelabel',x0=0.5)
+        >>>
+        >>> plt.show()
+    
+    """
+    
+    fig = plt.gcf()
+    ax = plt.gca()
+    
+    # input handling
+    if x0 is None:
+        x0 = np.mean(x)
+    if y0 is None:
+        y0 = np.mean(y)   
+    if ha is None:    
+        ha='center'
+    if va is None:    
+        va='center'
+         
+    dist2 = (x-x0)**2+(y-y0)**2
+    ind = np.argmin(dist2)
+    pos = [x[ind],y[ind]]
+    
+    text = plt.text(pos[0], pos[1], label, rotation=0, color=color, ha=ha, va=va,bbox=dict(ec='1',fc='1',pad=1))
+
+    def updaterot(event):
+        """
+        Callback to update the rotation of the labels
+        
+        """
+        # transform data points to screen space
+        xscreen = ax.transData.transform(zip(x[ind-1:ind+1],y[ind-1:ind+1]))
+        # compute the rotation angle
+        rot = np.rad2deg(np.arctan2(*np.abs(np.gradient(xscreen)[0][0][::-1])))
+        # set the rotation
+        text.set_rotation(rot) 
+        
+    updaterot(None)
+    
+    fig.canvas.mpl_connect('button_release_event', updaterot)
+
+    
         
 def cmapval(v,vmin=0,vmax=1,cmap=None):
     """

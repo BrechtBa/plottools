@@ -632,6 +632,7 @@ def linelabel(x,y,label,x0=None,y0=None,color='k',ha=None,va=None):
          
     dist2 = (x-x0)**2+(y-y0)**2
     ind = np.argmin(dist2)
+    ind = max(1,min(len(dist2)-2,ind))
     pos = [x[ind],y[ind]]
     
     text = plt.text(pos[0], pos[1], label, rotation=0, color=color, ha=ha, va=va,bbox=dict(ec='1',fc='1',pad=1))

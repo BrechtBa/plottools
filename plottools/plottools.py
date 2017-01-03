@@ -723,17 +723,20 @@ def marker(i):
     
     
     
-def right_align_legend(fig,leg):
+def right_align_legend(fig,leg,pdf=True):
     """
     right aligns legend entries
     
     Parameters
     ----------
     fig : matplotlib figure object
-        The figure object in which the legend is presented
+        The figure object in which the legend is presented.
         
     leg : matplotlib legend object
-        The legend object for which the entries need to be shifted
+        The legend object for which the entries need to be shifted.
+    
+    pdf : boolean
+        If true, the legend is optimized to be saved to a pdf. Defaults to True
         
     Examples
     --------
@@ -769,9 +772,10 @@ def right_align_legend(fig,leg):
         width = [t.get_window_extent(renderer).width for j,t in enumerate(leg.get_texts()) if j >= (i)*texpercol and j < (i+1)*texpercol]
         shift = max(width)
         
-        if min(width) < max(width):
-            # shift extra
-            shift += 8
+        if not pdf:
+            if min(width) < max(width):
+                # shift extra
+                shift += 8
 
         for j,t in enumerate(leg.get_texts()):
             if j >= (i)*texpercol and j < (i+1)*texpercol:

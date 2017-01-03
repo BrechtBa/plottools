@@ -64,7 +64,7 @@ def set_publication_rc():
     plt.rc('axes.formatter', useoffset=False)
     
     # legend
-    plt.rc('legend', fontsize=8, frameon=True)
+    plt.rc('legend', fontsize=7, frameon=True)
     
     # lines
     plt.rc('lines', linewidth=0.8,markersize=4)

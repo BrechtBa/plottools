@@ -51,7 +51,7 @@ and have good contrast when printed in greyscale.
     import numpy as np
 
     import plottools as pt
-    from plottools.color.util import plot_colors, to_greyscale
+    from plottools.cs.util import plot_colors, to_greyscale
 
     fig = plt.figure()
     ax1 = fig.add_subplot(211)
@@ -93,7 +93,7 @@ created. These can be accessed as a color scheme object by the ``light`` and
     
     plt.figure()
     x = np.linspace(0,2*np.pi,100)
-    for i,key in enumerate( pt.color.default.keys() ):
+    for i,key in enumerate( pt.color.keys() ):
         plt.plot(x,np.sin(x-i*2*2*np.pi/14),color=pt.color[key],label=key)
         plt.plot(x,np.sin(x-i*2*2*np.pi/14)-0.1,color=pt.color.light[key])
         plt.plot(x,np.sin(x-i*2*2*np.pi/14)+0.1,color=pt.color.dark[key])

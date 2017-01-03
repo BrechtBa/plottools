@@ -456,7 +456,7 @@ def categorized_xticklabels(xticks,xticklabels,xticklabelnames=None,fmt=None,siz
         >>> plt.figure()
         >>> bottom = np.zeros_like(values[0])
         >>> for val,lab in zip(values,labels):
-        ...     plt.bar(xticks+0.05,val,0.9,bottom=bottom,label=lab,color=plottools.color.default.next())
+        ...     plt.bar(xticks+0.05,val,0.9,bottom=bottom,label=lab,color=plottools.color.next())
         ...     bottom += val
         ...
         >>> 
@@ -720,3 +720,61 @@ def marker(i):
     
     values = ['^','s','v','o','>','*','<','1']
     return values[np.mod(i,len(values))]
+    
+    
+    
+def right_align_legend(fig,leg):
+    """
+    right aligns legend entries
+    
+    Parameters
+    ----------
+    fig : matplotlib figure object
+        The figure object in which the legend is presented
+        
+    leg : matplotlib legend object
+        The legend object for which the entries need to be shifted
+        
+    Examples
+    --------
+    .. plot::
+    
+        >>> import matplotlib.pyplot as plt
+        >>> import numpy as np
+        >>> import plottools
+        >>> fig,ax = plt.subplots()
+        >>> x = np.linspace(0,1,100)
+        >>> for i in range(10):
+        ...     y = 1-x + np.cumsum( 0.05*(2*np.random.random(len(x))-1) )
+        ...     if i == 0:
+        ...         label = 'i = {}'.format(i)
+        ...     else:
+        ...         label = '{}'.format(i)
+        ...     ax.plot(x,y,label=label)
+        ...
+        >>> leg = plt.legend(loc='best',ncol=2)
+        >>> plottools.right_align_legend(fig,leg)
+        >>> plt.show()
+       
+    """
+    
+    renderer = fig.canvas.get_renderer()
+
+    ncol = leg._ncol
+    ntex = len(leg.get_texts())
+
+    # determine the shift for each column
+    for i in range(ncol):
+        texpercol = ntex*1./ncol
+        width = [t.get_window_extent(renderer).width for j,t in enumerate(leg.get_texts()) if j >= (i)*texpercol and j < (i+1)*texpercol]
+        shift = max(width)
+        
+        if min(width) < max(width):
+            # shift extra
+            shift += 8
+
+        for j,t in enumerate(leg.get_texts()):
+            if j >= (i)*texpercol and j < (i+1)*texpercol:
+                
+                t.set_ha('right')
+                t.set_position((shift,0))

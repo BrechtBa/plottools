@@ -24,9 +24,26 @@ import itertools
 def set_publication_rc():
     """
     Sets rc parameters for creating plots suitable for publication
+      
+    """
+    
+    set_rc()
+    
+    
+def set_rc(style='paper'):
+    """
+    Sets rc parameters for creating plots suitable for different types of publications
+    
+    Parameters
+    ----------
+    style : str, {'paper', 'poster','screen'}
+        String representing the style of the plot and determining sizes and
+        layouts
     
     Notes
     -----
+    This is incomplete and values are guessed and untested
+
     The computer modern fonts are not installed by default on windows. But can
     be downloaded at https://sourceforge.net/projects/cm-unicode/
     To use new installed fonts in matplotlib you must delete the font cache file
@@ -40,43 +57,82 @@ def set_publication_rc():
         >>> import numpy as np
         >>> import plottools
         >>>
-        >>> plottools.set_publication_rc()
+        >>> plottools.set_rc(style='paper')
         >>> plt.plot(np.arange(10),10*np.random.random(10))
         >>> plt.xlabel('x-label')
         >>> plt.ylabel('y-label')
         >>> plt.show()
-    
+        
     """
     
+    
     # figure
-    plt.rc('figure', autolayout=True, figsize=(80/25.4,50/25.4))
+    if style == 'paper':
+        plt.rc('figure', autolayout=True, figsize=(80/25.4,50/25.4))
+    elif style == 'screen':
+        plt.rc('figure', autolayout=True, figsize=(240/25.4,150/25.4))
+        
+        
     plt.rc('savefig', format='pdf', dpi=150, bbox='tight', pad_inches=0.02)
+    
     
     # text
     #plt.rc('text', usetex=True)
     
     # font
-    plt.rc('font', size=6) 
+    if style == 'paper':
+        plt.rc('font', size=6) 
+    if style == 'screen':
+        plt.rc('font', size=10) 
+                
+                
     plt.rc('font', **{'family':'sans-serif', 'sans-serif':['computer modern sans serif', 'CMU Sans Serif'], 'serif':['computer modern roman', 'CMU Serif']} )
 
+    
     # axes
-    plt.rc('axes', linewidth=0.4, labelsize=8)
+    if style == 'paper':
+        plt.rc('axes', linewidth=0.4, labelsize=8)
+    elif style == 'screen':
+        plt.rc('axes', linewidth=0.4, labelsize=10)
+        
     plt.rc('axes.formatter', useoffset=False)
     
+    
+    
     # legend
-    plt.rc('legend', fontsize=7, frameon=True)
+    if style == 'paper':
+        plt.rc('legend', fontsize=7, frameon=True, borderpad=0.2)
+    elif style == 'screen':
+        plt.rc('legend', fontsize=10, frameon=True)
+    
+    
     
     # lines
-    plt.rc('lines', linewidth=0.8,markersize=4)
-    
+    if style == 'paper':
+        plt.rc('lines', linewidth=0.8,markersize=4)
+    elif style == 'screen':
+        plt.rc('lines', linewidth=1.5,markersize=6)
+
+        
+        
     # patch
     plt.rc('patch', linewidth=0.4, edgecolor=(1.0,1.0,1.0))
     
+    
     # ticks
-    plt.rc('xtick.major', size=2, width=0.3, pad=3)
-    plt.rc('ytick.major', size=2, width=0.3, pad=3)
-    plt.rc('xtick.minor', size=1, width=0.3, pad=3)
-    plt.rc('ytick.minor', size=1, width=0.3, pad=3)
+    if style == 'paper':
+        plt.rc('xtick.major', size=2, width=0.3, pad=3)
+        plt.rc('ytick.major', size=2, width=0.3, pad=3)
+        plt.rc('xtick.minor', size=1, width=0.3, pad=3)
+        plt.rc('ytick.minor', size=1, width=0.3, pad=3)
+    elif style == 'screen':    
+        plt.rc('xtick.major', size=4, width=0.6, pad=3)
+        plt.rc('ytick.major', size=4, width=0.6, pad=3)
+        plt.rc('xtick.minor', size=2, width=0.6, pad=3)
+        plt.rc('ytick.minor', size=2, width=0.6, pad=3)
+    
+    
+    
     
     
 def savefig(filename,width=None,height=None,ratio=8./5.,**kwargs):
@@ -103,11 +159,11 @@ def savefig(filename,width=None,height=None,ratio=8./5.,**kwargs):
     
     if width is None and height is None:
         width = 8.
-        height = width/ratio
+        height = float(width)/ratio
     elif not width is None and height is None:
-        height = width/ratio
+        height = float(width)/ratio
     elif not height is None and width is None:
-        width = height*ratio
+        width = float(height)*ratio
         
         
     plt.gcf().set_size_inches(width/2.54,height/2.54)

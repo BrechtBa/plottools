@@ -81,9 +81,9 @@ def set_rc(style='paper'):
     
     # font
     if style == 'paper':
-        plt.rc('font', size=6) 
+        plt.rc('font', size=5) 
     if style == 'screen':
-        plt.rc('font', size=10) 
+        plt.rc('font', size=8) 
                 
                 
     plt.rc('font', **{'family':'sans-serif', 'sans-serif':['computer modern sans serif', 'CMU Sans Serif'], 'serif':['computer modern roman', 'CMU Serif']} )
@@ -91,7 +91,7 @@ def set_rc(style='paper'):
     
     # axes
     if style == 'paper':
-        plt.rc('axes', linewidth=0.4, labelsize=8)
+        plt.rc('axes', linewidth=0.4, labelsize=6)
     elif style == 'screen':
         plt.rc('axes', linewidth=0.4, labelsize=10)
         
@@ -100,10 +100,11 @@ def set_rc(style='paper'):
     
     
     # legend
+    plt.rc('legend', numpoints=1, frameon=True)
     if style == 'paper':
-        plt.rc('legend', fontsize=7, frameon=True, borderpad=0.2)
+        plt.rc('legend', fontsize=6, borderpad=0.4, labelspacing=0.3,handletextpad=0.6,borderaxespad=0.4,columnspacing=1.0)
     elif style == 'screen':
-        plt.rc('legend', fontsize=10, frameon=True)
+        plt.rc('legend', fontsize=10)
     
     
     
@@ -121,15 +122,15 @@ def set_rc(style='paper'):
     
     # ticks
     if style == 'paper':
-        plt.rc('xtick.major', size=2, width=0.3, pad=3)
-        plt.rc('ytick.major', size=2, width=0.3, pad=3)
-        plt.rc('xtick.minor', size=1, width=0.3, pad=3)
-        plt.rc('ytick.minor', size=1, width=0.3, pad=3)
+        plt.rc('xtick.major', size=2, width=0.3, pad=2)
+        plt.rc('ytick.major', size=2, width=0.3, pad=2)
+        plt.rc('xtick.minor', size=1, width=0.3, pad=2)
+        plt.rc('ytick.minor', size=1, width=0.3, pad=2)
     elif style == 'screen':    
-        plt.rc('xtick.major', size=4, width=0.6, pad=3)
-        plt.rc('ytick.major', size=4, width=0.6, pad=3)
-        plt.rc('xtick.minor', size=2, width=0.6, pad=3)
-        plt.rc('ytick.minor', size=2, width=0.6, pad=3)
+        plt.rc('xtick.major', size=4, width=0.6, pad=2)
+        plt.rc('ytick.major', size=4, width=0.6, pad=2)
+        plt.rc('xtick.minor', size=2, width=0.6, pad=2)
+        plt.rc('ytick.minor', size=2, width=0.6, pad=2)
     
     
     

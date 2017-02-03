@@ -91,7 +91,7 @@ def set_rc(style='paper'):
     
     # axes
     if style == 'paper':
-        plt.rc('axes', linewidth=0.4, labelsize=6)
+        plt.rc('axes', linewidth=0.4, labelsize=6, labelpad=2)
     elif style == 'screen':
         plt.rc('axes', linewidth=0.4, labelsize=10)
         
@@ -838,4 +838,4 @@ def right_align_legend(fig,leg,pdf=True):
             if j >= (i)*texpercol and j < (i+1)*texpercol:
                 
                 t.set_ha('right')
-                t.set_position((shift,0))
+                t.set_position((shift - 2 - leg.borderpad,0))

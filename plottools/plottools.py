@@ -136,7 +136,7 @@ def set_rc(style='paper'):
     
     
     
-def savefig(filename,width=None,height=None,ratio=8./5.,**kwargs):
+def savefig(filename,fig=None,width=None,height=None,ratio=8./5.,**kwargs):
     """
     Creates a new figure with a specified width and 8:5, width:height ratio
     
@@ -157,6 +157,8 @@ def savefig(filename,width=None,height=None,ratio=8./5.,**kwargs):
         figure height in cm
         
     """
+    if fig is None:
+        fig = plt.gcf()
     
     if width is None and height is None:
         width = 8.
@@ -167,8 +169,8 @@ def savefig(filename,width=None,height=None,ratio=8./5.,**kwargs):
         width = float(height)*ratio
         
         
-    plt.gcf().set_size_inches(width/2.54,height/2.54)
-    plt.savefig(filename,**kwargs)
+    fig.set_size_inches(width/2.54,height/2.54)
+    fig.savefig(filename,**kwargs)
     
     
 def set_style(style,axes=None):

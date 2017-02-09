@@ -134,14 +134,11 @@ def set_rc(style='paper'):
     
     
     
-    
-    
-def savefig(filename,fig=None,width=None,height=None,ratio=8./5.,**kwargs):
+def figsize(fig=None,width=None,height=None,ratio=8./5.):
     """
-    Creates a new figure with a specified width and 8:5, width:height ratio
+    Resizes a figure to a standard size
     
-    If no width or height are specified a 8cm x 5cm figure is saved. If the
-    width and height are specified, a figure of that size is saved.
+    If the width and height are specified, a figure is reshaped to that size.
     If one of width or height is specified, the ratio is used to define the 
     other.
     
@@ -157,6 +154,7 @@ def savefig(filename,fig=None,width=None,height=None,ratio=8./5.,**kwargs):
         figure height in cm
         
     """
+
     if fig is None:
         fig = plt.gcf()
     
@@ -170,6 +168,16 @@ def savefig(filename,fig=None,width=None,height=None,ratio=8./5.,**kwargs):
         
         
     fig.set_size_inches(width/2.54,height/2.54)
+
+    
+def savefig(filename,fig=None,width=None,height=None,ratio=8./5.,**kwargs):
+    """
+    Deprecieated
+        
+    """
+    print('Warning pt.savefig is deprecieated, use pt.figsize(...), plt.savefig instead')  
+        
+    figsize(fig=fig,width=width,height=height,ratio=ratio)
     fig.savefig(filename,**kwargs)
     
     

@@ -81,7 +81,7 @@ def set_rc(style='paper'):
     
     # font
     if style == 'paper':
-        plt.rc('font', size=5) 
+        plt.rc('font', size=6) 
     if style == 'screen':
         plt.rc('font', size=8) 
                 
@@ -91,7 +91,7 @@ def set_rc(style='paper'):
     
     # axes
     if style == 'paper':
-        plt.rc('axes', linewidth=0.4, labelsize=6, labelpad=2)
+        plt.rc('axes', linewidth=0.4, labelsize=7, labelpad=2)
     elif style == 'screen':
         plt.rc('axes', linewidth=0.4, labelsize=10)
         

@@ -18,6 +18,7 @@
 ################################################################################
 
 import matplotlib.pyplot as plt
+import matplotlib.tight_layout
 import numpy as np
 import itertools
 
@@ -231,7 +232,7 @@ def set_style(style,axes=None):
         
                  
               
-def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alpha=0.8,connect=True,connect_color='k',connect_alpha=0.3,spacing=4,tick_width=20,tick_height=12):
+def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,axes_dx=0,axes_dy=0,box=True,box_color='k',box_alpha=0.8,connect=True,connect_color='k',connect_alpha=0.3,spacing_box=2,spacing_axes_left=12,spacing_axes_right=2,spacing_axes_bottom=8,spacing_axes_top=2):
     """
     Creates a new axes which zooms in on a part of a given axes.
     
@@ -265,6 +266,14 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
     axes_y : list
         [min, max] specifying the new axes vertical location in data
         coordinates 
+        
+    axes_dx : number, optional
+        manual shifting of the axes in x direction in relative figure
+        coordinates
+        
+    axes_dy : number, optional
+        manual shifting of the axes in y direction in relative figure
+        coordinates
     
     box : bool, optional 
         specifies whether a box is drawn
@@ -284,16 +293,24 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
     connect_alpha : number 
         between 0 and 1, specifies the connecting lines alpha  
         
-    spacing : number
+    spacing_box : number
         specifies the spacing between the box, axis and the connecting lines
         in points
     
-    tick_width : number
-        specifies the width of the tick labels in points to avoid drawing
+    spacing_axes_left : number
+        specifies the spacing on the left of the axes in points to avoid drawing
         connecting lines through the tick labels
+        
+    spacing_axes_right : number
+        specifies the spacing on the right of the axes in points to avoid
+        drawing connecting lines through the tick labels
     
-    tick_height : number
-        specifies the height of the tick labels in points to avoid drawing
+    spacing_axes_bottom : number
+        specifies the spacing on the bottom of the axes in points to avoid
+        drawing connecting lines through the tick labels
+        
+    spacing_axes_top : number
+        specifies the spacing on the top of the axes in points to avoid drawing
         connecting lines through the tick labels
             
             
@@ -326,19 +343,64 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
     
     """
 
-    plt.tight_layout()
-    ax1_p0 = (ax.transData + fig.transFigure.inverted()).transform_point((axes_x[0],axes_y[0]))
-    ax1_p1 = (ax.transData + fig.transFigure.inverted()).transform_point((axes_x[1],axes_y[1]))
+    # check the axes scale
+    if ax.get_xscale() == 'log':
+        xlog = True
+    else:
+        xlog = False
+        
+    if ax.get_yscale() == 'log':
+        ylog = True
+    else:
+        ylog = False
 
-    ax1 = fig.add_axes([ax1_p0[0],ax1_p0[1],ax1_p1[0]-ax1_p0[0],ax1_p1[1]-ax1_p0[1]])
+    
+    fig.set_tight_layout(True)
 
+  
+    # compute the axes position in figure coordinates
+    axes_list = fig.get_axes()
+    subplotspec_list = matplotlib.tight_layout.get_subplotspec_list(axes_list)
+    renderer = matplotlib.tight_layout.get_renderer(fig)
+    rect = (0,0,0.1+ax.bbox.xmax/fig.bbox.xmax,0.1+ax.bbox.ymax/fig.bbox.ymax)
+    axpos = matplotlib.tight_layout.get_tight_layout_figure(fig, axes_list, subplotspec_list, renderer, rect=rect)
+     
+    xlim = ax.get_xlim()
+    ylim = ax.get_ylim()
+    
+    
+    # convert figure point coordinates to data coordinates and vice versa
+    # if xlog:
+        # x_in_data_coordinates   = 10**(np.log10(xlim[0]) + (x_in_figure_coordinates/fig.bbox.width-axpos['left']-axes_dx)/(axpos['right']-axpos['left'])*np.abs(np.log10(xlim[1])-np.log10(xlim[0])))
+        # x_in_figure_coordinates = ((np.log10(x_in_data_coordinates) - np.log10(xlim[0]))/np.abs(np.log10(xlim[1])-np.log10(xlim[0]))*(axpos['right']-axpos['left'])+axpos['left'])*fig.bbox.width
+    # else:
+        # x_in_data_coordinates = xlim[0] + (x_in_figure_coordinates/fig.bbox.width-axpos['left']-axes_dx)/(axpos['right']-axpos['left'])*np.abs(xlim[1]-xlim[0])
+        # x_in_figure_coordinates = ((x_in_data_coordinates - xlim[0])/np.abs(xlim[1]-xlim[0])*(axpos['right']-axpos['left'])+axpos['left'])*fig.bbox.width+axpos['left']
+        
+    
+    
+    if xlog:
+        axes_x_pct = (np.log10(axes_x)-np.log10(xlim[0]))/np.abs(np.log10(xlim[1])-np.log10(xlim[0]))
+    else:
+        axes_x_pct = (axes_x-xlim[0])/np.abs(xlim[1]-xlim[0])
+    if ylog:
+        axes_y_pct = (np.log10(axes_y)-np.log10(ylim[0]))/np.abs(np.log10(ylim[1])-np.log10(ylim[0]))
+    else:
+        axes_y_pct = (axes_y-ylim[0])/np.abs(ylim[1]-ylim[0])
+    
+    
+    # add the axes
+    ax1 = fig.add_axes([axpos['left']+axes_x_pct[0]*(axpos['right']-axpos['left'])+axes_dx,axpos['bottom']+axes_y_pct[0]*(axpos['top']-axpos['bottom'])+axes_dy,(axes_x_pct[1]-axes_x_pct[0])*(axpos['right']-axpos['left']),(axes_y_pct[1]-axes_y_pct[0])*(axpos['top']-axpos['bottom'])])
+    
     ax1.set_xlim(zoom_x)
     ax1.set_ylim(zoom_y)
 
-    plt.xticks(fontsize=4)
-    plt.yticks(fontsize=4)
-    ax1.tick_params(axis='x', pad=3)
-    ax1.tick_params(axis='y', pad=2)
+    for item in ax1.get_xticklabels() + ax1.get_yticklabels():
+        item.set_fontsize(4)
+    
+    
+    ax1.tick_params(axis='x', size=1.2, width=0.3, pad=2)
+    ax1.tick_params(axis='y', size=1.2, width=0.3, pad=2)
 
     if box:
         ax.plot([zoom_x[0],zoom_x[1],zoom_x[1],zoom_x[0],zoom_x[0]],[zoom_y[0],zoom_y[0],zoom_y[1],zoom_y[1],zoom_y[0]],color=box_color,alpha=box_alpha,linewidth=0.4)
@@ -401,20 +463,51 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
         line1 = ([zoom_xx[p1],axes_xx[p1]],[zoom_yy[p1],axes_yy[p1]])
         line2 = ([zoom_xx[p2],axes_xx[p2]],[zoom_yy[p2],axes_yy[p2]])
         
-       
-        # estimate the width and height of the ticks
-        tick_width  = (ax.transData.inverted()).transform_point((tick_width,0))[0]-(ax.transData.inverted()).transform_point((0,0))[0]
-        tick_height = (ax.transData.inverted()).transform_point((0,tick_height))[1]-(ax.transData.inverted()).transform_point((0,0))[1]
-        spacing     = (ax.transData.inverted()).transform_point((spacing,0))[0]-(ax.transData.inverted()).transform_point((0,0))[0]
         
-        # create fictional boxes around the axes where no lines should be
-        box_axes_x = [ axes_x[0]-tick_width , axes_x[1]+spacing]
-        box_axes_y = [ axes_y[0]-tick_height , axes_y[1]+spacing]
         
-        box_zoom_x = [ zoom_x[0]-spacing , zoom_x[1]+spacing]
-        box_zoom_y = [ zoom_y[0]-spacing , zoom_y[1]+spacing]
-        
+        # create fictional boxes around the axes where no lines should be in data coordinates
+        if xlog:
+            box_axes_x = [ 10**(np.log10(xlim[0]) + ((ax1.bbox.xmin-spacing_axes_left )/fig.bbox.width-axpos['left']-axes_dx)/(axpos['right']-axpos['left'])*np.abs(np.log10(xlim[1])-np.log10(xlim[0]))) ,
+                           10**(np.log10(xlim[0]) + ((ax1.bbox.xmax+spacing_axes_right)/fig.bbox.width-axpos['left']-axes_dx)/(axpos['right']-axpos['left'])*np.abs(np.log10(xlim[1])-np.log10(xlim[0])))  ]
+            
+            zoom_x_fig = [ ((np.log10(zoom_x[0]) - np.log10(xlim[0]))/np.abs(np.log10(xlim[1])-np.log10(xlim[0]))*(axpos['right']-axpos['left'])+axpos['left'])*fig.bbox.width,
+                           ((np.log10(zoom_x[1]) - np.log10(xlim[0]))/np.abs(np.log10(xlim[1])-np.log10(xlim[0]))*(axpos['right']-axpos['left'])+axpos['left'])*fig.bbox.width ]
+            box_zoom_x = [ 10**(np.log10(xlim[0]) + ((zoom_x_fig[0]-spacing_box)/fig.bbox.width-axpos['left'])/(axpos['right']-axpos['left'])*np.abs(np.log10(xlim[1])-np.log10(xlim[0]))) ,
+                           10**(np.log10(xlim[0]) + ((zoom_x_fig[1]+spacing_box)/fig.bbox.width-axpos['left'])/(axpos['right']-axpos['left'])*np.abs(np.log10(xlim[1])-np.log10(xlim[0])))  ]
 
+        else:
+            box_axes_x = [ xlim[0] + ((ax1.bbox.xmin-spacing_axes_left )/fig.bbox.width-axpos['left']-axes_dx)/(axpos['right']-axpos['left'])*np.abs(xlim[1]-xlim[0]),
+                           xlim[0] + ((ax1.bbox.xmin+spacing_axes_right)/fig.bbox.width-axpos['left']-axes_dx)/(axpos['right']-axpos['left'])*np.abs(xlim[1]-xlim[0]) ]
+            zoom_x_fig = [ ((zoom_x[0] - xlim[0])/np.abs(xlim[1]-xlim[0])*(axpos['right']-axpos['left'])+axpos['left'])*fig.bbox.width+axpos['left'],
+                           ((zoom_x[1] - xlim[0])/np.abs(xlim[1]-xlim[0])*(axpos['right']-axpos['left'])+axpos['left'])*fig.bbox.width+axpos['left'] ]
+            box_zoom_x = [ xlim[0] + ((zoom_x_fig[0]-spacing_box)/fig.bbox.width-axpos['left'])/(axpos['right']-axpos['left'])*np.abs(xlim[1]-xlim[0]) ,
+                           xlim[0] + ((zoom_x_fig[1]+spacing_box)/fig.bbox.width-axpos['left'])/(axpos['right']-axpos['left'])*np.abs(xlim[1]-xlim[0]) ]
+
+            
+        if ylog:
+            box_axes_y = [ 10**(np.log10(ylim[0]) + ((ax1.bbox.ymin-spacing_axes_bottom)/fig.bbox.height-axpos['bottom']-axes_dy)/(axpos['top']-axpos['bottom'])*np.abs(np.log10(ylim[1])-np.log10(ylim[0]))) ,
+                           10**(np.log10(ylim[0]) + ((ax1.bbox.ymax+spacing_axes_top   )/fig.bbox.height-axpos['bottom']-axes_dy)/(axpos['top']-axpos['bottom'])*np.abs(np.log10(ylim[1])-np.log10(ylim[0])))  ]
+            
+            zoom_y_fig = [ ((np.log10(zoom_y[0]) - np.log10(ylim[0]))/np.abs(np.log10(ylim[1])-np.log10(ylim[0]))*(axpos['top']-axpos['bottom'])+axpos['bottom'])*fig.bbox.height,
+                           ((np.log10(zoom_y[1]) - np.log10(ylim[0]))/np.abs(np.log10(ylim[1])-np.log10(ylim[0]))*(axpos['top']-axpos['bottom'])+axpos['bottom'])*fig.bbox.height ]
+            box_zoom_y = [ 10**(np.log10(ylim[0]) + ((zoom_y_fig[0]-spacing_box)/fig.bbox.height-axpos['bottom'])/(axpos['top']-axpos['bottom'])*np.abs(np.log10(ylim[1])-np.log10(ylim[0]))) ,
+                           10**(np.log10(ylim[0]) + ((zoom_y_fig[1]+spacing_box)/fig.bbox.height-axpos['bottom'])/(axpos['top']-axpos['bottom'])*np.abs(np.log10(ylim[1])-np.log10(ylim[0])))  ]
+        else:    
+            box_axes_y = [ ylim[0] + ((ax1.bbox.ymin-spacing_axes_bottom)/fig.bbox.height-axpos['bottom']-axes_dy)/(axpos['top']-axpos['bottom'])*np.abs(ylim[1]-ylim[0]),
+                           ylim[0] + ((ax1.bbox.ymax+spacing_axes_top   )/fig.bbox.height-axpos['bottom']-axes_dy)/(axpos['top']-axpos['bottom'])*np.abs(ylim[1]-ylim[0]) ]
+                           
+            zoom_y_fig = [ ((zoom_y[0] - ylim[0])/np.abs(ylim[1]-ylim[0])*(axpos['top']-axpos['bottom'])+axpos['bottom'])*fig.bbox.height+axpos['bottom'],
+                           ((zoom_y[1] - ylim[0])/np.abs(ylim[1]-ylim[0])*(axpos['top']-axpos['bottom'])+axpos['bottom'])*fig.bbox.height+axpos['bottom'] ]
+            box_zoom_y = [ ylim[0] + ((zoom_y_fig[0]-spacing_box)/fig.bbox.height-axpos['bottom'])/(axpos['top']-axpos['bottom'])*np.abs(ylim[1]-ylim[0]) ,
+                           ylim[0] + ((zoom_y_fig[1]+spacing_box)/fig.bbox.height-axpos['bottom'])/(axpos['top']-axpos['bottom'])*np.abs(ylim[1]-ylim[0]) ]
+        
+       
+        
+        # plot the boxes for testing
+        #ax.plot([axes_x[0],axes_x[1],axes_x[1],axes_x[0],axes_x[0]],[axes_y[0],axes_y[0],axes_y[1],axes_y[1],axes_y[0]],'r')
+        #ax.plot([box_axes_x[0],box_axes_x[1],box_axes_x[1],box_axes_x[0],box_axes_x[0]],[box_axes_y[0],box_axes_y[0],box_axes_y[1],box_axes_y[1],box_axes_y[0]],'b')
+        #ax.plot([box_zoom_x[0],box_zoom_x[1],box_zoom_x[1],box_zoom_x[0],box_zoom_x[0]],[box_zoom_y[0],box_zoom_y[0],box_zoom_y[1],box_zoom_y[1],box_zoom_y[0]],'b')
+  
         
         # cut the lines inside the boxes
         t = np.linspace(0,1,100)
@@ -422,32 +515,60 @@ def zoom_axes(fig,ax,zoom_x,zoom_y,axes_x,axes_y,box=True,box_color='k',box_alph
         line1_cut = line1
         line2_cut = line2
         for tt in t:
-            x = line1[0][0]*(1-tt) + line1[0][1]*tt
-            y = line1[1][0]*(1-tt) + line1[1][1]*tt
+            if xlog:
+                x = 10**(np.log10(line1[0][0])*(1-tt) + np.log10(line1)[0][1]*tt)
+            else:
+                x = line1[0][0]*(1-tt) + line1[0][1]*tt
+            if ylog:
+                y = 10**(np.log10(line1[1][0])*(1-tt) + np.log10(line1[1][1])*tt)
+            else:
+                y = line1[1][0]*(1-tt) + line1[1][1]*tt
+                
             if x <= box_zoom_x[0] or x >= box_zoom_x[1] or y <= box_zoom_y[0] or y >= box_zoom_y[1]:
                 line1_cut[0][0] = x
                 line1_cut[1][0] = y
                 break
         
         for tt in t[::-1]:
-            x = line1[0][0]*(1-tt) + line1[0][1]*tt
-            y = line1[1][0]*(1-tt) + line1[1][1]*tt
+            if xlog:
+                x = 10**(np.log10(line1[0][0])*(1-tt) + np.log10(line1)[0][1]*tt)
+            else:
+                x = line1[0][0]*(1-tt) + line1[0][1]*tt
+            if ylog:
+                y = 10**(np.log10(line1[1][0])*(1-tt) + np.log10(line1[1][1])*tt)
+            else:
+                y = line1[1][0]*(1-tt) + line1[1][1]*tt
+                
             if (x <= box_axes_x[0] or x >= box_axes_x[1]) or (y <= box_axes_y[0] or y >= box_axes_y[1]):
                 line1_cut[0][1] = x
                 line1_cut[1][1] = y
                 break
         
         for tt in t:
-            x = line2[0][0]*(1-tt) + line2[0][1]*tt
-            y = line2[1][0]*(1-tt) + line2[1][1]*tt
+            if xlog:
+                x = 10**(np.log10(line2[0][0])*(1-tt) + np.log10(line2)[0][1]*tt)
+            else:
+                x = line2[0][0]*(1-tt) + line2[0][1]*tt
+            if ylog:
+                y = 10**(np.log10(line2[1][0])*(1-tt) + np.log10(line2[1][1])*tt)
+            else:
+                y = line2[1][0]*(1-tt) + line2[1][1]*tt
+                
             if (x <= box_zoom_x[0] or x >= box_zoom_x[1]) or (y <= box_zoom_y[0] or y >= box_zoom_y[1]):
                 line2_cut[0][0] = x
                 line2_cut[1][0] = y
                 break
         
         for tt in t[::-1]:
-            x = line2[0][0]*(1-tt) + line2[0][1]*tt
-            y = line2[1][0]*(1-tt) + line2[1][1]*tt
+            if xlog:
+                x = 10**(np.log10(line2[0][0])*(1-tt) + np.log10(line2)[0][1]*tt)
+            else:
+                x = line2[0][0]*(1-tt) + line2[0][1]*tt
+            if ylog:
+                y = 10**(np.log10(line2[1][0])*(1-tt) + np.log10(line2[1][1])*tt)
+            else:
+                y = line2[1][0]*(1-tt) + line2[1][1]*tt
+            
             if (x <= box_axes_x[0] or x >= box_axes_x[1]) or (y <= box_axes_y[0] or y >= box_axes_y[1]):
                 line2_cut[0][1] = x
                 line2_cut[1][1] = y

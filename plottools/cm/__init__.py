@@ -24,7 +24,9 @@ import numpy as np
 
 from hotwater import test_cm as hotwater
 from coldhot import test_cm as coldhot
+from redbluegreen import test_cm as redbluegreen
 from hue import test_cm as hue
+
 
 def cm_to_svg(colormap,filename,stops=3):
     """

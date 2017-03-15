@@ -4,7 +4,8 @@ import os
 
 # retrieve the version
 try:
-    versionfile = os.path.join('plottools','__version__.py')
+    setuppath = os.path.dirname(os.path.abspath(__file__))
+    versionfile = os.path.join(setuppath,'plottools','__version__.py')
     f = open( versionfile, 'r')
     content = f.readline()
     splitcontent = content.split('\'')
